@@ -389,11 +389,20 @@ export default function App() {
                       aria-hidden={slide !== index}
                       inert={slide !== index ? "" : undefined}
                     >
-                      <p className="eyebrow light">
+                      <p className="eyebrow light" data-program={program.name}>
                         <span /> PEOPLE. POSSIBILITY. PROGRESS.
                       </p>
                       <h1>{program.title}</h1>
-                      <p className="hero-description">{program.intro}</p>
+                      <p className="hero-description">
+                        <span className="hero-desktop-intro">
+                          {program.intro}
+                        </span>
+                        <span className="hero-mobile-intro">
+                          {index === 2
+                            ? "Health, dignity and a brighter tomorrow for our communities."
+                            : program.intro}
+                        </span>
+                      </p>
                       <div className="hero-actions">
                         <button
                           className="button button-gold"
@@ -428,6 +437,9 @@ export default function App() {
                       </button>
                     ))}
                   </div>
+                  <span className="hero-mobile-label">
+                    {programs[slide].short} / 0{slide + 1}
+                  </span>
                 </div>
               </div>
             </section>

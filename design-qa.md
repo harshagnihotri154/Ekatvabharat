@@ -68,3 +68,7 @@ Added six dedicated routes with descriptive titles, breadcrumbs, active navbar s
 ## Mobile-specific redesign
 
 See `mobile-review.md` for the audit and evidence. Phone-only styles introduce a photo-first hero, shared slide content rows, large program tabs, editorial program rows, warmer donation surfaces and more legible touch interfaces. Desktop screenshots before/after are pixel-identical at the checked 1440px viewport. Eleven browser tests and production build pass. Final result: passed.
+
+## Approved mobile hero option 1
+
+Source: `/Users/harshagnihotri/.codex/generated_images/01a0d1c1-1a31-78a3-84c0-fe6c2c6ea046/exec-94b8dea4-8f56-464e-9156-41dc4cdd8937.png`. Implementation: `artifacts/mobile-option1.png`, CSS viewport 390 × 844, device scale 1. Compared full-width photo, navy fade, condensed white heading, saffron CTA, underlined supporting action and segmented indicators. Retained supplied photograph rather than replacing it with generated people. Shared grid rows preserve consistent position across all four slides; indicator buttons retain 44px touch heights. Source is a 853 × 1844 concept; compared proportional mobile composition. The third progress segment is correctly selected for the initial healthcare slide (source mock showed inconsistent segment numbering). Twelve browser tests pass. Desktop before/after full-page captures are pixel-identical. Final result: passed.

@@ -573,3 +573,202 @@
     grid-column: 1/-1;
   }
 }
+
+/* Approved mobile hero: Close to Care. */
+.hero-mobile-intro,
+.hero-mobile-label {
+  display: none;
+}
+@media (max-width: 600px) {
+  .header {
+    background: #fff;
+  }
+  .header-donate {
+    border-radius: 10px;
+  }
+  .hero {
+    background: #0b2032;
+    padding-top: 0;
+    height: auto;
+    min-height: 0;
+  }
+  .hero-photo {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 450px;
+    margin: 0;
+    border-radius: 0;
+  }
+  .hero-photo img {
+    object-position: 50% 42%;
+  }
+  .hero-shade {
+    display: block;
+    position: absolute;
+    inset: 0 0 auto;
+    height: 451px;
+    background: linear-gradient(
+      180deg,
+      transparent 45%,
+      #0b203240 65%,
+      #0b2032 100%
+    );
+  }
+  .hero-inner {
+    padding-top: 365px;
+    width: calc(100% - 48px);
+  }
+  .hero-copy .eyebrow {
+    position: relative;
+    font-size: 0;
+    display: block;
+    margin-bottom: 18px;
+    padding-bottom: 17px;
+    line-height: 1;
+  }
+  .hero-copy .eyebrow span {
+    display: none;
+  }
+  .hero-copy .eyebrow::before {
+    content: attr(data-program);
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: white;
+  }
+  .hero-copy .eyebrow::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 38px;
+    height: 3px;
+    background: var(--gold);
+    border-radius: 3px;
+  }
+  .hero-copy h1 {
+    font-size: clamp(30px, 9.6vw, 43px);
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+    margin-bottom: 13px;
+  }
+  .hero-desktop-intro {
+    display: none;
+  }
+  .hero-mobile-intro {
+    display: inline;
+  }
+  .hero-copy .hero-description {
+    font-size: 15px;
+    line-height: 1.55;
+    color: #dce4ea;
+    margin-bottom: 18px;
+  }
+  .hero-copy .hero-actions {
+    gap: 9px;
+  }
+  .hero-actions .button {
+    justify-content: center;
+    gap: 18px;
+    border-radius: 11px;
+    font-size: 15px;
+    min-height: 48px;
+  }
+  .hero-actions .text-link {
+    font-size: 14px;
+    text-decoration: underline;
+    text-underline-offset: 5px;
+    min-height: 42px;
+  }
+  .hero-actions .text-link svg {
+    display: none;
+  }
+  .hero-location {
+    display: none;
+  }
+  .carousel-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 0 17px;
+  }
+  .slide-choices {
+    display: flex;
+    gap: 6px;
+    flex: 0 0 auto;
+  }
+  .slide-choices button,
+  .slide-choices button.selected {
+    position: relative;
+    display: block;
+    width: 32px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0;
+    font-size: 0;
+    border: 0;
+    background: transparent;
+    border-radius: 0;
+  }
+  .slide-choices button::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 20px;
+    height: 4px;
+    border-radius: 4px;
+    background: #8399a8;
+  }
+  .slide-choices button.selected::after {
+    background: var(--gold);
+  }
+  .hero-mobile-label {
+    display: block;
+    flex-shrink: 0;
+    font-size: 11px;
+    color: #e1e7eb;
+    letter-spacing: 0.02em;
+  }
+  .manifesto {
+    background: #faf6ed;
+    padding: 28px 0;
+    color: #0b2032;
+  }
+  .manifesto h2 {
+    font-size: 29px;
+    text-transform: none;
+    max-width: none;
+  }
+  .manifesto p {
+    font-size: 12px;
+  }
+}
+@media (max-width: 350px) {
+  .hero-photo {
+    height: 380px;
+  }
+  .hero-shade {
+    height: 381px;
+  }
+  .hero-inner {
+    padding-top: 300px;
+    width: calc(100% - 40px);
+  }
+  .hero-copy h1 {
+    font-size: 30px;
+  }
+  .hero-mobile-label {
+    font-size: 10px;
+  }
+  .slide-choices button {
+    width: 25px;
+  }
+  .carousel-bar {
+    gap: 8px;
+  }
+}
+@media(max-width:600px){.hero-photo img{object-position:56% 42%}}
