@@ -226,7 +226,7 @@ export default function App() {
     const meta = document.querySelector('meta[name="description"]');
     if (meta && pageInfo[path]) meta.content = pageInfo[path].description;
   }, [path, isHome]);
-  const [slide, setSlide] = useState(0),
+  const [slide, setSlide] = useState(2),
     [playing, setPlaying] = useState(false),
     [hover, setHover] = useState(false),
     [menu, setMenu] = useState(false),
@@ -245,7 +245,7 @@ export default function App() {
     if (!playing || hover || modal) return;
     const timer = setInterval(() => {
       if (!document.hidden) setSlide((s) => (s + 1) % 4);
-    }, 1500);
+    }, 2000);
     return () => clearInterval(timer);
   }, [playing, hover, modal]);
   useEffect(() => {
@@ -368,7 +368,7 @@ export default function App() {
                     src={image(p.image)}
                     alt=""
                     className={slide === i ? "active" : ""}
-                    fetchPriority={i === 0 ? "high" : "auto"}
+                    fetchPriority={i === 2 ? "high" : "auto"}
                   />
                 ))}
               </div>

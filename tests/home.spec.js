@@ -11,11 +11,11 @@ test("desktop programs, gallery, dialog focus, FAQs and accessibility", async ({
   await page.goto("/");
   await page.evaluate(() => document.fonts.ready);
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "OPPORTUNITY.",
+    "CARE THAT REACHES.",
   );
   await page.getByRole("button", { name: "Next slide", exact: true }).click();
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "STRONGER ROOTS.",
+    "HER POTENTIAL.",
   );
   await page
     .getByRole("button", { name: "Show Women & youth empowerment slide" })
@@ -144,14 +144,16 @@ test("slideshow timing, pause and email handoff are honest", async ({
   await expect(
     page.getByRole("button", { name: "Pause slideshow" }),
   ).toBeVisible();
-  await page.clock.fastForward(1600);
+  await page.clock.fastForward(1900);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("CARE THAT REACHES.");
+  await page.clock.fastForward(200);
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "STRONGER ROOTS.",
+    "HER POTENTIAL.",
   );
   await page.getByRole("button", { name: "Pause slideshow" }).click();
   await page.clock.fastForward(15000);
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "STRONGER ROOTS.",
+    "HER POTENTIAL.",
   );
   await page
     .getByRole("button", { name: "Send an enquiry", exact: true })
