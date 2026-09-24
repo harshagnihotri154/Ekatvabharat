@@ -64,3 +64,7 @@ Added a responsive tax-documentation section and a donation-dialog note. Officia
 ## Dedicated pages
 
 Added six dedicated routes with descriptive titles, breadcrumbs, active navbar states and footer links. The long homepage and shared dialogs remain available. Static build emits real per-route entry files with page titles and descriptions. Ten browser tests pass, including direct loads, refresh, all page navigation links, all six page accessibility scans, mobile overflow and page-specific primary actions. Evidence: `artifacts/page-*-mobile.png` and `artifacts/page-about-desktop.png`, `artifacts/page-programs-desktop.png`, `artifacts/page-contact-desktop.png`. Final result: passed.
+
+## Mobile-specific redesign
+
+See `mobile-review.md` for the audit and evidence. Phone-only styles introduce a photo-first hero, shared slide content rows, large program tabs, editorial program rows, warmer donation surfaces and more legible touch interfaces. Desktop screenshots before/after are pixel-identical at the checked 1440px viewport. Eleven browser tests and production build pass. Final result: passed.

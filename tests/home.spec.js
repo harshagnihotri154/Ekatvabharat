@@ -13,7 +13,12 @@ test("desktop programs, gallery, dialog focus, FAQs and accessibility", async ({
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "CARE THAT REACHES.",
   );
-  await page.getByRole("button", { name: "Next slide", exact: true }).click();
+  await page
+    .getByRole("button", {
+      name: "Show Women & youth empowerment slide",
+      exact: true,
+    })
+    .click();
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "HER POTENTIAL.",
   );
@@ -143,14 +148,18 @@ test("slideshow timing, pause and email handoff are honest", async ({
   await page.goto("/");
   await expect(
     page.getByRole("button", { name: "Pause slideshow" }),
-  ).toBeVisible();
+  ).toHaveCount(0);
   await page.clock.fastForward(1900);
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("CARE THAT REACHES.");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "CARE THAT REACHES.",
+  );
   await page.clock.fastForward(200);
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "HER POTENTIAL.",
   );
-  await page.getByRole("button", { name: "Pause slideshow" }).click();
+  await page
+    .getByRole("button", { name: "Show Women & youth empowerment slide" })
+    .click();
   await page.clock.fastForward(15000);
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "HER POTENTIAL.",
@@ -235,4 +244,91 @@ test("all four hero banners keep the same height at every breakpoint", async ({
       ),
     ).toBe(true);
   }
+});
+
+test("hero content rows align across slides without clipping", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  for (const [width, height] of [
+    [320, 568],
+    [360, 667],
+    [390, 844],
+    [768, 1024],
+    [1024, 768],
+    [1440, 900],
+    [844, 390],
+  ]) {
+    await page.setViewportSize({ width, height });
+    await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
+    const positions = [];
+    for (const name of [
+      "Skills & livelihoods",
+      "Sustainable agriculture",
+      "Community healthcare",
+      "Women & youth empowerment",
+    ]) {
+      await page
+        .getByRole("button", { name: `Show ${name} slide`, exact: true })
+        .click();
+      positions.push(
+        await page.evaluate(() => {
+          const hero = document.querySelector(".hero").getBoundingClientRect();
+          const copy = document.querySelector(".hero-copy.is-active");
+          const bounds = [
+            ...copy.querySelectorAll("h1,.hero-description,.hero-actions"),
+          ].map((e) => e.getBoundingClientRect());
+          const controls = document
+            .querySelector(".carousel-bar")
+            .getBoundingClientRect();
+          return {
+            rows: bounds.map((b) => Math.round(b.top - hero.top)),
+            fits: bounds.every(
+              (b) =>
+                b.bottom <= controls.top &&
+                b.left >= hero.left &&
+                b.right <= hero.right,
+            ),
+            controlsFit: controls.bottom <= hero.bottom + 1,
+          };
+        }),
+      );
+    }
+    for (const p of positions) {
+      expect(p.rows).toEqual(positions[0].rows);
+      expect(p.fits).toBe(true);
+      expect(p.controlsFit).toBe(true);
+    }
+  }
+});
+
+test("touch mobile slides advance every two seconds after a tap", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    isMobile: true,
+    hasTouch: true,
+    reducedMotion: "no-preference",
+  });
+  const page = await context.newPage();
+  await page.clock.install();
+  await page.goto("http://127.0.0.1:3000/");
+  await page.clock.fastForward(1900);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "CARE THAT REACHES.",
+  );
+  await page.clock.fastForward(200);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "HER POTENTIAL.",
+  );
+  await page
+    .getByRole("button", { name: "Show Community healthcare slide" })
+    .tap();
+  await page.clock.fastForward(2000);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "HER POTENTIAL.",
+  );
+  await context.close();
 });

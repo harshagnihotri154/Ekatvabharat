@@ -2495,3 +2495,226 @@ footer {
     flex-wrap: wrap;
   }
 }
+/* Shared row sizing keeps every slide's text and actions at identical positions. */
+.hero {
+  height: 80vh;
+  min-height: 620px;
+}
+.hero-inner {
+  padding-top: clamp(32px, 6vh, 64px);
+  overflow: visible;
+}
+.hero-copy-stack {
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+  max-width: 670px;
+  width: 100%;
+}
+.hero-copy-stack > .hero-copy {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: subgrid;
+  grid-area: 1 / 1 / 5 / 2;
+  min-height: 0;
+  align-content: start;
+}
+.hero-copy .eyebrow {
+  margin: 0 0 24px;
+}
+.hero-copy h1 {
+  font-size: clamp(48px, 5.4vw, 78px);
+  line-height: 1.02;
+  margin: 0 0 24px;
+  letter-spacing: -0.015em;
+}
+.hero-copy .hero-description {
+  font-size: 16px;
+  line-height: 1.65;
+  max-width: 430px;
+  margin: 0 0 28px;
+}
+.hero-copy .hero-actions {
+  margin: 0;
+  align-self: start;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 26px;
+}
+.hero-location {
+  margin-top: auto;
+  margin-bottom: 24px;
+  padding-top: 28px;
+  flex-shrink: 0;
+}
+.carousel-bar {
+  min-height: 76px;
+  align-items: center;
+  padding-block: 10px;
+}
+.carousel-controls .icon-button {
+  width: 40px;
+  height: 40px;
+}
+.slide-choices button {
+  min-height: 44px;
+}
+@media (max-width: 900px) {
+  .hero-copy-stack {
+    max-width: 610px;
+  }
+  .hero-copy h1 {
+    font-size: clamp(44px, 6.5vw, 62px);
+  }
+  .carousel-controls {
+    gap: 7px;
+  }
+  .slide-choices {
+    gap: 0 20px;
+  }
+  .hero-photo img {
+    object-position: 65% center;
+  }
+}
+@media (max-width: 600px) {
+  .hero {
+    height: 80svh;
+    min-height: 650px;
+  }
+  .hero-inner {
+    padding-top: 36px;
+  }
+  .hero-copy-stack {
+    max-width: none;
+  }
+  .hero-copy .eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    margin-bottom: 24px;
+  }
+  .hero-copy h1 {
+    font-size: clamp(29px, 9vw, 40px);
+    line-height: 1.08;
+    margin-bottom: 22px;
+  }
+  .hero-copy .hero-description {
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 100%;
+    margin-bottom: 24px;
+  }
+  .hero-copy .hero-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    width: 100%;
+  }
+  .hero-actions .button {
+    width: 100%;
+    min-height: 48px;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: 14px 18px;
+  }
+  .hero-actions .text-link {
+    justify-self: start;
+    min-height: 36px;
+    font-size: 12px;
+    gap: 15px;
+  }
+  .hero-location {
+    font-size: 9px;
+    line-height: 1.5;
+    padding-top: 22px;
+    margin-bottom: 20px;
+    max-width: 100%;
+  }
+  .hero-shade {
+    background:
+      linear-gradient(90deg, #0b2032ed, #0b2032a8),
+      linear-gradient(0deg, #0b2032 0%, #0b203255 90%);
+  }
+  .carousel-bar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 14px;
+    padding-block: 12px;
+    min-height: 112px;
+  }
+  .slide-choices {
+    grid-template-columns: 1fr 1fr;
+    gap: 2px 12px;
+  }
+  .slide-choices button {
+    font-size: 10px;
+    line-height: 1.4;
+    padding: 8px 0;
+    min-height: 44px;
+  }
+  .carousel-controls {
+    grid-template-columns: repeat(3, 32px);
+    gap: 5px;
+    padding: 0;
+  }
+  .carousel-controls .icon-button {
+    width: 32px;
+    height: 44px;
+    border-radius: 4px;
+  }
+  .slide-count {
+    margin-bottom: 5px;
+  }
+}
+@media (max-width: 350px) {
+  .carousel-bar {
+    grid-template-columns: 1fr;
+  }
+  .carousel-controls {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .slide-count {
+    margin: 0 auto 0 0;
+  }
+  .hero {
+    min-height: 710px;
+  }
+}
+@media (max-height: 550px) and (min-width: 601px) {
+  .hero {
+    height: auto;
+    min-height: 570px;
+  }
+  .hero-inner {
+    min-height: 570px;
+  }
+  .hero-copy h1 {
+    font-size: 48px;
+  }
+}
+
+/* Compact mobile banners: content determines height, without an empty spacer. */
+@media (max-width: 600px) {
+  .hero {
+    height: auto;
+    min-height: 0;
+  }
+  .hero-inner {
+    height: auto;
+    min-height: 0;
+    padding-top: 30px;
+  }
+  .hero-location {
+    margin-top: 22px;
+    padding-top: 0;
+    margin-bottom: 20px;
+  }
+  .carousel-bar {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    gap: 0;
+    padding-block: 8px 14px;
+  }
+  .slide-choices {
+    gap: 2px 18px;
+  }
+}

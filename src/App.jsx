@@ -2,9 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   ArrowUpRight,
   ArrowRight,
-  ArrowLeft,
-  Pause,
-  Play,
   Menu,
   X,
   MapPin,
@@ -258,7 +255,8 @@ export default function App() {
   }, [menu]);
   const choose = (n) => {
     setSlide((n + 4) % 4);
-    setPlaying(false);
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches)
+      setPlaying(false);
   };
   const openContact = (topic) => {
     setEmailReady(false);
@@ -354,9 +352,15 @@ export default function App() {
               className="hero"
               aria-label="Our work slideshow"
               aria-roledescription="carousel"
-              onMouseEnter={() => setHover(true)}
-              onMouseLeave={() => setHover(false)}
-              onFocusCapture={() => setHover(true)}
+              onPointerEnter={(e) => {
+                if (e.pointerType === "mouse") setHover(true);
+              }}
+              onPointerLeave={(e) => {
+                if (e.pointerType === "mouse") setHover(false);
+              }}
+              onFocusCapture={(e) => {
+                if (e.target.matches(":focus-visible")) setHover(true);
+              }}
               onBlurCapture={(e) => {
                 if (!e.currentTarget.contains(e.relatedTarget)) setHover(false);
               }}
@@ -423,32 +427,6 @@ export default function App() {
                         {p.short}
                       </button>
                     ))}
-                  </div>
-                  <div className="carousel-controls">
-                    <span className="slide-count">0{slide + 1} / 04</span>
-                    <button
-                      className="icon-button"
-                      aria-label="Previous slide"
-                      onClick={() => choose(slide - 1)}
-                    >
-                      <ArrowLeft size={18} />
-                    </button>
-                    <button
-                      className="icon-button"
-                      aria-label={
-                        playing ? "Pause slideshow" : "Play slideshow"
-                      }
-                      onClick={() => setPlaying(!playing)}
-                    >
-                      {playing ? <Pause size={16} /> : <Play size={16} />}
-                    </button>
-                    <button
-                      className="icon-button"
-                      aria-label="Next slide"
-                      onClick={() => choose(slide + 1)}
-                    >
-                      <ArrowRight size={18} />
-                    </button>
                   </div>
                 </div>
               </div>
@@ -520,10 +498,8 @@ export default function App() {
                     </h2>
                   </div>
                   <p>
-                    Different needs. One shared purpose:
-                    <br />
-                    giving people the means to shape
-                    <br />
+                    Different needs. One shared purpose: <br />
+                    giving people the means to shape <br />
                     their own tomorrow.
                   </p>
                 </div>
