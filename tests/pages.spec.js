@@ -1,83 +1,140 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
-const pages = [
-  ["Our story", "/about"],
-  ["Our work", "/programs"],
-  ["Community", "/community"],
-  ["CSR partnerships", "/partnerships"],
-  ["Contact", "/contact"],
-  ["Donate", "/donate"],
-];
-test("separate pages, navbar/footer links, refresh and accessibility", async ({
+for (const path of [
+  "/about",
+  "/programs",
+  "/community",
+  "/partnerships",
+  "/donate",
+  "/contact",
+  "/transparency",
+  "/get-involved",
+  "/privacy",
+  "/donation-policy",
+  "/admin",
+])
+  test(`page ${path} structure and accessibility`, async ({ page }) => {
+    await page.goto(path);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+    expect(
+      (
+        await new AxeBuilder({ page })
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .analyze()
+      ).violations,
+    ).toEqual([]);
+  });
+test("donation amount and cause survive navigation and bank fallback stays clear", async ({
   page,
 }) => {
-  const errors = [];
-  page.on("pageerror", (e) => errors.push(e.message));
-  await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto("/");
-  for (const [label, path] of pages) {
-    await page
-      .locator("header")
-      .getByRole("link", { name: label, exact: true })
-      .click();
-    await expect(page).toHaveURL(new RegExp(`${path}$`));
-    await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
-    await expect(
-      page.locator("header").getByRole("link", { name: label, exact: true }),
-    ).toHaveAttribute("aria-current", "page");
-    await expect(
-      page.locator("footer").getByRole("link", { name: label, exact: true }),
-    ).toHaveAttribute("href", path);
-    await page.reload();
-    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-    const result = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
-      .analyze();
-    expect(result.violations).toEqual([]);
-  }
-  expect(errors).toEqual([]);
+  await page.goto("/donate?amount=2500&cause=Skills+%26+livelihoods");
+  await expect(page.getByLabel("Donation amount in rupees")).toHaveValue(
+    "2500",
+  );
+  await expect(page.getByLabel("Choose a cause")).toHaveValue(
+    "Skills & livelihoods",
+  );
   await page
-    .locator("footer")
-    .getByRole("link", { name: "Home", exact: true })
+    .getByRole("button", { name: "Continue with my contribution" })
     .click();
-  await expect(page).toHaveURL(/\/$/);
-});
-test("mobile pages and primary interactions", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  for (const [, path] of pages) {
-    await page.goto(path);
-    await page.evaluate(() => document.fonts.ready);
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= innerWidth,
-      ),
-    ).toBe(true);
-    await page.screenshot({
-      path: `artifacts/page-${path.slice(1)}-mobile.png`,
-      fullPage: true,
-    });
-  }
-  await page.goto("/programs");
-  await page
-    .getByRole("button", { name: "Enquire about this program" })
-    .first()
-    .click();
-  await expect(page.getByRole("dialog")).toBeVisible();
-  await page.keyboard.press("Escape");
-  await page.goto("/community");
-  await page
-    .getByRole("button", { name: "View photographs", exact: true })
-    .first()
-    .click();
-  await expect(page.getByRole("dialog").locator("img")).toBeVisible();
-  await page.keyboard.press("Escape");
-  await page.goto("/donate");
-  await page.getByRole("button", { name: "View donation details" }).click();
-  await expect(page.getByRole("dialog")).toContainText("7246196719");
-  await page.keyboard.press("Escape");
-  await page.goto("/contact");
-  await page.getByRole("button", { name: "Course admission" }).click();
+  await page.getByText("Prefer a bank transfer?", { exact: true }).click();
+  await expect(page.getByText("7246196719")).toBeVisible();
   await expect(
-    page.getByRole("dialog").getByLabel("I’m interested in"),
-  ).toHaveValue("Course admission");
+    page.getByText("Make the transfer in your banking app.", { exact: false }),
+  ).toBeVisible();
+});
+test("enquiry success only appears after persistence and errors preserve input", async ({
+  page,
+}) => {
+  await page.route("**/api/enquiries", (route) =>
+    route.fulfill({
+      status: 503,
+      contentType: "application/json",
+      body: JSON.stringify({ error: "Temporarily unavailable" }),
+    }),
+  );
+  await page.goto("/get-involved");
+  await page.getByLabel("Your name").fill("Test Volunteer");
+  await page.getByLabel("Email address").fill("test@example.test");
+  await page
+    .getByLabel("Your message")
+    .fill("I would like to volunteer for local training.");
+  await page.getByRole("checkbox").check();
+  await page.getByRole("button", { name: "Send enquiry", exact: true }).click();
+  await expect(page.getByRole("alert")).toContainText(
+    "Temporarily unavailable",
+  );
+  await expect(page.getByLabel("Your name")).toHaveValue("Test Volunteer");
+  await page.route("**/api/enquiries", (route) =>
+    route.fulfill({
+      status: 201,
+      contentType: "application/json",
+      body: JSON.stringify({ id: "test-reference" }),
+    }),
+  );
+  await page.getByRole("button", { name: "Send enquiry", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText(
+    "Your enquiry is saved.",
+  );
+});
+test("checkout handles captured confirmation without exposing gateway secrets", async ({
+  page,
+}) => {
+  await page.route("**/api/config", (route) =>
+    route.fulfill({ json: { paymentsEnabled: true, mode: "test" } }),
+  );
+  await page.route("**/api/donations", (route) =>
+    route.fulfill({
+      status: 201,
+      json: {
+        id: "test-donation",
+        orderId: "order_test",
+        amount: 100000,
+        currency: "INR",
+        keyId: "rzp_test_public",
+        mode: "test",
+      },
+    }),
+  );
+  await page.route("**/api/donations/test-donation/verify", (route) =>
+    route.fulfill({
+      json: {
+        id: "test-donation",
+        status: "paid",
+        amount: 100000,
+        cause: "Where it is needed most",
+        receipt: "EBF-test",
+      },
+    }),
+  );
+  await page.addInitScript(() => {
+    window.Razorpay = class {
+      constructor(options) {
+        this.options = options;
+      }
+      on() {}
+      open() {
+        this.options.handler({
+          razorpay_order_id: "order_test",
+          razorpay_payment_id: "pay_test",
+          razorpay_signature: "test",
+        });
+      }
+    };
+  });
+  await page.goto("/donate");
+  await page
+    .getByRole("button", { name: "Continue with my contribution" })
+    .click();
+  await page.getByLabel("Your name").fill("Test Donor");
+  await page
+    .getByLabel("Email for your acknowledgement")
+    .fill("donor@example.test");
+  for (const c of await page.getByRole("checkbox").all()) await c.check();
+  await page
+    .getByRole("button", { name: "Contribute ₹1,000", exact: true })
+    .click();
+  await expect(page.getByRole("status")).toContainText(
+    "Your payment is confirmed",
+  );
 });

@@ -11,13 +11,7 @@ import {
 } from "lucide-react";
 
 export const donationBankConfirmed = true;
-const causes = [
-  "Where it is needed most",
-  "Skills & livelihoods",
-  "Community healthcare",
-  "Sustainable agriculture",
-  "Women & youth empowerment",
-];
+import { causes, maxDonationPaise } from "../../shared/causes";
 export function DonationOptions({
   onContinue,
   initialAmount = "1000",
@@ -60,7 +54,7 @@ export function DonationOptions({
             type="number"
             inputMode="decimal"
             min="1"
-            max="10000000"
+            max={maxDonationPaise / 100}
             step="0.01"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
@@ -85,16 +79,10 @@ export function DonationOptions({
         <span>A one-time gift. A shared step forward.</span>
       </div>
       <button className="button button-gold" type="submit">
-        {donationBankConfirmed
-          ? "View donation details"
-          : "Continue with my contribution"}
+        Continue with my contribution
         <ArrowRight size={18} />
       </button>
-      <p className="small-note">
-        {donationBankConfirmed
-          ? "Donate directly by bank transfer. No payment is taken here."
-          : "Our team will share current payment instructions. No payment is taken here."}
-      </p>
+      <p className="small-note">Choose your payment method on the next step.</p>
     </form>
   );
 }
@@ -128,9 +116,11 @@ export function DonationDetails({ donation, onEdit }) {
           <span>{donation.cause}</span>
         </span>
       </div>
-      <button className="text-link edit-gift" onClick={onEdit}>
-        <ArrowLeft size={15} /> Change amount or cause
-      </button>
+      {onEdit && (
+        <button className="text-link edit-gift" onClick={onEdit}>
+          <ArrowLeft size={15} /> Change amount or cause
+        </button>
+      )}
       {donationBankConfirmed ? (
         <>
           <h3>
@@ -224,9 +214,9 @@ export function DonationTaxInfo() {
           <div>
             <p className="eyebrow">GIVE WITH CLARITY</p>
             <h2>
-              TAX BENEFITS.
+              Tax benefits.
               <br />
-              CLEAR DOCUMENTATION.
+              Clear documentation.
             </h2>
           </div>
           <div>
@@ -311,11 +301,10 @@ export default function Giving({ onContinue }) {
             A LITTLE FROM YOU. POSSIBILITY FOR SOMEONE.
           </p>
           <h2>
-            BE THE REASON
+            A little support.
             <br />
-            SOMEONE TAKES
-            <br />
-            THEIR NEXT STEP.
+            New possibilities.
+
           </h2>
           <p>
             A chance to learn. A community that cares. A future with more

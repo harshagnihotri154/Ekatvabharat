@@ -16,101 +16,23 @@ import {
   Check,
 } from "lucide-react";
 
-import Giving, {
-  DonationOptions,
-  DonationDetails,
-  DonationTaxInfo,
-} from "./components/Giving";
-
+import PartnershipSection from "./components/PartnershipSection";
+import ProgramsSection from "./components/ProgramsSection";
+import PurposeSection from "./components/PurposeSection";
+import HeroCarousel from "./components/HeroCarousel";
+import Giving, { DonationTaxInfo } from "./components/Giving";
 import ContentPages, { pageInfo } from "./components/ContentPages";
+import EnquiryForm from "./components/EnquiryForm";
+import { EvidenceStrip, TrustSection } from "./components/TrustSections";
+import { programDetails } from "./data/programs";
 
 const image = (name) => `/images/${name}.webp`;
-const programs = [
-  {
-    name: "Skills & livelihoods",
-    short: "Skills & livelihoods",
-    image: "slide_skilling",
-    icon: GraduationCap,
-    title: (
-      <>
-        OPPORTUNITY.
-        <br />
-        FOR EVERYONE.
-      </>
-    ),
-    intro:
-      "Skills that open doors. Care that reaches communities. A future we build together.",
-    description:
-      "Practical learning, industry exposure and career guidance that help young people take their next step.",
-    detail:
-      "Our Earn & Learn initiative connects classroom learning with practical experience. Hospitality, food service, cookery and business skills help young people prepare for employment and entrepreneurship.",
-    action: "Explore skill programs",
-    link: "#earn-learn",
-  },
-  {
-    name: "Sustainable agriculture",
-    short: "Agriculture",
-    image: "slide_agri",
-    icon: Sprout,
-    title: (
-      <>
-        STRONGER ROOTS.
-        <br />
-        BETTER FUTURES.
-      </>
-    ),
-    intro:
-      "Supporting the people who grow our food. Building knowledge, healthier soil and resilient livelihoods.",
-    description:
-      "Working with farming communities on sustainable practices, soil health and stronger market connections.",
-    detail:
-      "Our agriculture framework focuses on organic practices, soil health, farmer producer organisations and access to knowledge and markets. We bring sustainable livelihoods and environmental care together.",
-    action: "Support rural livelihoods",
-    link: "#programs",
-  },
-  {
-    name: "Community healthcare",
-    short: "Healthcare",
-    image: "slide_health",
-    icon: HeartPulse,
-    title: (
-      <>
-        CARE THAT REACHES.
-        <br />
-        HOPE THAT STAYS.
-      </>
-    ),
-    intro:
-      "Health awareness, nutrition and community care. Because a healthier tomorrow should be within everyone’s reach.",
-    description:
-      "Health awareness camps and nutrition initiatives for children and families in our communities.",
-    detail:
-      "From community health awareness to nutrition support for children affected by cancer, our work brings people together around care. Initiatives include maternal and child health awareness and community outreach in Pune.",
-    action: "Explore community care",
-    link: "#stories",
-  },
-  {
-    name: "Women & youth empowerment",
-    short: "Women & youth",
-    image: "slide_women",
-    icon: Users,
-    title: (
-      <>
-        HER POTENTIAL.
-        <br />
-        OUR SHARED FUTURE.
-      </>
-    ),
-    intro:
-      "Opening space for skills, confidence and independence. When people thrive, communities move forward.",
-    description:
-      "Skills, education and entrepreneurship opportunities that help women and young people build independence.",
-    detail:
-      "We support women and young people through skills development, career orientation and entrepreneurship initiatives. Collaboration with local communities helps make opportunities more accessible.",
-    action: "Get involved",
-    link: "#get-involved",
-  },
-];
+const programIcons = [GraduationCap, Sprout, HeartPulse, Users];
+const programs = programDetails.map((program, index) => ({
+  ...program,
+  icon: programIcons[index],
+  detail: program.description + " " + program.evidence,
+}));
 const faqs = [
   [
     "What does Ekatvabharat Foundation do?",
@@ -126,11 +48,11 @@ const faqs = [
   ],
   [
     "How do I donate or volunteer?",
-    "Speak with our team to arrange a contribution or explore volunteering opportunities. We will share verified donation instructions and discuss where your time or skills can help. This website does not collect payments.",
+    "Speak with our team to arrange a contribution or explore volunteering opportunities. We will share verified donation instructions and discuss where your time or skills can help. Use the contribution page for available payment options. Online payments are confirmed after verification; bank transfers are reconciled by the team.",
   ],
   [
     "Where does the foundation work?",
-    "Our registered office is in Katraj, Pune, with skill training at Vadgaon. Our materials describe community initiatives across Pune and PCMC, alongside rural development work in Maharashtra.",
+    "We are based in Pune. Our materials describe community initiatives across Pune and PCMC, alongside rural development work in Maharashtra.",
   ],
 ];
 const stories = [
@@ -223,66 +145,50 @@ export default function App() {
     const meta = document.querySelector('meta[name="description"]');
     if (meta && pageInfo[path]) meta.content = pageInfo[path].description;
   }, [path, isHome]);
-  const [slide, setSlide] = useState(2),
-    [playing, setPlaying] = useState(false),
-    [hover, setHover] = useState(false),
-    [menu, setMenu] = useState(false),
+  const [showContribute, setShowContribute] = useState(false);
+  useEffect(() => {
+    const hero = document.getElementById("home");
+    if (!hero) {
+      setShowContribute(true);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) =>
+      setShowContribute(!entry.isIntersecting),
+    );
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, [path]);
+  const [menu, setMenu] = useState(false),
     [modal, setModal] = useState(null),
-    [faq, setFaq] = useState(0),
-    [emailReady, setEmailReady] = useState(false);
+    [faq, setFaq] = useState(0);
   const close = React.useCallback(() => setModal(null), []);
   useEffect(() => {
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPlaying(!media.matches);
-    const change = () => setPlaying(!media.matches);
-    media.addEventListener("change", change);
-    return () => media.removeEventListener("change", change);
-  }, []);
-  useEffect(() => {
-    if (!playing || hover || modal) return;
-    const timer = setInterval(() => {
-      if (!document.hidden) setSlide((s) => (s + 1) % 4);
-    }, 2000);
-    return () => clearInterval(timer);
-  }, [playing, hover, modal]);
-  useEffect(() => {
     if (!menu) return;
-    const key = (e) => {
-      if (e.key === "Escape") setMenu(false);
+    const key = (event) => {
+      if (event.key === "Escape") setMenu(false);
     };
     document.addEventListener("keydown", key);
     return () => document.removeEventListener("keydown", key);
   }, [menu]);
-  const choose = (n) => {
-    setSlide((n + 4) % 4);
-    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches)
-      setPlaying(false);
-  };
   const openContact = (topic) => {
-    setEmailReady(false);
-    setModal({
-      type:
-        topic === "Donation" || topic === "Support our work"
-          ? "donation"
-          : "contact",
-      topic,
-    });
+    if (topic === "Donation" || topic === "Support our work") {
+      window.location.href = "/donate";
+      return;
+    }
+    setModal({ type: "contact", topic });
+  };
+  const goDonate = ({ amount, cause }) => {
+    window.location.href = `/donate?${new URLSearchParams({ amount, cause })}`;
   };
   const nav = [
     ["Home", "/"],
     ["Our story", "/about"],
     ["Our work", "/programs"],
     ["Community", "/community"],
+    ["Transparency", "/transparency"],
     ["CSR partnerships", "/partnerships"],
     ["Contact", "/contact"],
   ];
-  function sendEmail(e) {
-    e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    const body = `Hello Ekatvabharat Foundation,\n\n${data.get("message")}\n\nName: ${data.get("name")}\nEmail: ${data.get("email")}\nInterest: ${data.get("interest")}`;
-    window.location.href = `mailto:info@ekatvabharat.org?subject=${encodeURIComponent(data.get("interest") + " enquiry")}&body=${encodeURIComponent(body)}`;
-    setEmailReady(true);
-  }
   return (
     <>
       <a className="skip-link" href="#main">
@@ -344,215 +250,13 @@ export default function App() {
           </button>
         </div>
       </header>
-      <main id="main">
+      <main id="main" className={isHome ? "home-journal" : undefined}>
         {isHome ? (
           <>
-            <section
-              id="home"
-              className="hero"
-              aria-label="Our work slideshow"
-              aria-roledescription="carousel"
-              onPointerEnter={(e) => {
-                if (e.pointerType === "mouse") setHover(true);
-              }}
-              onPointerLeave={(e) => {
-                if (e.pointerType === "mouse") setHover(false);
-              }}
-              onFocusCapture={(e) => {
-                if (e.target.matches(":focus-visible")) setHover(true);
-              }}
-              onBlurCapture={(e) => {
-                if (!e.currentTarget.contains(e.relatedTarget)) setHover(false);
-              }}
-            >
-              <div className="hero-photo">
-                {programs.map((p, i) => (
-                  <img
-                    key={p.image}
-                    src={image(p.image)}
-                    alt=""
-                    className={slide === i ? "active" : ""}
-                    fetchPriority={i === 2 ? "high" : "auto"}
-                  />
-                ))}
-              </div>
-              <div className="hero-shade" />
-              <div className="container hero-inner">
-                <div
-                  className="hero-copy-stack"
-                  aria-live={playing ? "off" : "polite"}
-                >
-                  {programs.map((program, index) => (
-                    <div
-                      className={`hero-copy ${slide === index ? "is-active" : ""}`}
-                      key={program.name}
-                      aria-hidden={slide !== index}
-                      inert={slide !== index ? "" : undefined}
-                    >
-                      <p className="eyebrow light" data-program={program.name}>
-                        <span /> PEOPLE. POSSIBILITY. PROGRESS.
-                      </p>
-                      <h1>{program.title}</h1>
-                      <p className="hero-description">
-                        <span className="hero-desktop-intro">
-                          {program.intro}
-                        </span>
-                        <span className="hero-mobile-intro">
-                          {index === 2
-                            ? "Health, dignity and a brighter tomorrow for our communities."
-                            : program.intro}
-                        </span>
-                      </p>
-                      <div className="hero-actions">
-                        <button
-                          className="button button-gold"
-                          onClick={() => openContact("Support our work")}
-                        >
-                          Support our work <ArrowUpRight size={19} />
-                        </button>
-                        <a className="text-link light-link" href={program.link}>
-                          {program.action}
-                          <ArrowRight size={18} />
-                        </a>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="hero-location">
-                  <MapPin size={15} /> Rooted in Pune. Working for a stronger
-                  Bharat.
-                </div>
-                <div className="carousel-bar">
-                  <div className="slide-choices" aria-label="Choose a program">
-                    {programs.map((p, i) => (
-                      <button
-                        key={p.short}
-                        aria-pressed={slide === i}
-                        aria-label={`Show ${p.name} slide`}
-                        className={slide === i ? "selected" : ""}
-                        onClick={() => choose(i)}
-                      >
-                        <span>0{i + 1}</span>
-                        {p.short}
-                      </button>
-                    ))}
-                  </div>
-                  <span className="hero-mobile-label">
-                    {programs[slide].short} / 0{slide + 1}
-                  </span>
-                </div>
-              </div>
-            </section>
-            <div className="manifesto">
-              <div className="container">
-                <h2>LOCAL ROOTS. SHARED PROGRESS.</h2>
-                <p>
-                  Bridging rural and urban opportunity. <br />
-                  Building a more inclusive India.
-                </p>
-              </div>
-            </div>
-            <section className="section about container" id="about">
-              <div>
-                <p className="eyebrow">01 / OUR PURPOSE</p>
-                <h2>
-                  A FAIR CHANCE.
-                  <br />A LASTING CHANGE.
-                </h2>
-              </div>
-              <div className="about-text">
-                <p className="lead">
-                  Talent is everywhere.
-                  <br />
-                  Opportunity should be, too.
-                </p>
-                <p>
-                  At Ekatvabharat Foundation, we bring skills, care and
-                  opportunity closer to the people who need them. Founded in
-                  Pune in 2021, we work alongside communities to build pathways
-                  to independent, dignified lives.
-                </p>
-                <p>
-                  From a first step into employment to healthier families and
-                  sustainable farms, our work starts with people — and grows
-                  through partnership.
-                </p>
-                <a className="text-link" href="#programs">
-                  Discover what we do <ArrowRight size={18} />
-                </a>
-              </div>
-              <div className="purpose-note">
-                <span className="big-year">2021</span>
-                <span>
-                  THE YEAR OUR
-                  <br />
-                  SHARED JOURNEY BEGAN
-                </span>
-                <div className="note-rule" />
-                <p>
-                  Community-led.
-                  <br />
-                  Opportunity-focused.
-                  <br />
-                  Together, for Bharat.
-                </p>
-              </div>
-            </section>
-            <section className="section programs-section" id="programs">
-              <div className="container">
-                <div className="section-heading">
-                  <div>
-                    <p className="eyebrow">02 / OUR WORK</p>
-                    <h2>
-                      FOUR PATHWAYS.
-                      <br />
-                      BRIGHTER FUTURES.
-                    </h2>
-                  </div>
-                  <p>
-                    Different needs. One shared purpose: <br />
-                    giving people the means to shape <br />
-                    their own tomorrow.
-                  </p>
-                </div>
-                <div className="program-grid">
-                  {programs.map((p, i) => (
-                    <article className="program" key={p.name}>
-                      <button
-                        className="program-image"
-                        onClick={() => setModal({ type: "program", index: i })}
-                        aria-label={`Learn about ${p.name}`}
-                      >
-                        <img
-                          src={image(p.image)}
-                          alt={`Illustration of ${p.name.toLowerCase()}`}
-                          loading="lazy"
-                          width="1376"
-                          height="768"
-                        />
-                        <span className="program-number">0{i + 1}</span>
-                        <span className="program-arrow">
-                          <ArrowUpRight size={22} />
-                        </span>
-                      </button>
-                      <p.icon className="program-icon" size={25} />
-                      <h3>{p.name}</h3>
-                      <p>{p.description}</p>
-                      <button
-                        className="text-link"
-                        onClick={() => setModal({ type: "program", index: i })}
-                      >
-                        Explore program <ArrowRight size={17} />
-                      </button>
-                    </article>
-                  ))}
-                </div>
-                <p className="image-note">
-                  Program images are illustrative. Explore photographs from our
-                  activities below.
-                </p>
-              </div>
-            </section>
+            <HeroCarousel />
+            <EvidenceStrip />
+            <PurposeSection />
+            <ProgramsSection programs={programs} onExplore={(index) => setModal({ type: "program", index })} />
             <section className="earn-section" id="earn-learn">
               <div className="container earn-grid">
                 <div className="earn-photo">
@@ -570,9 +274,9 @@ export default function App() {
                 <div className="earn-copy">
                   <p className="eyebrow light">03 / OPPORTUNITY IN ACTION</p>
                   <h2>
-                    LEARN A SKILL.
+                    From learning
                     <br />
-                    BUILD A FUTURE.
+                    to a next step.
                   </h2>
                   <p>
                     Confidence comes from doing. Our Earn & Learn initiative
@@ -623,16 +327,11 @@ export default function App() {
               <div className="section-heading">
                 <div>
                   <p className="eyebrow">04 / FROM OUR COMMUNITIES</p>
-                  <h2>
-                    REAL PEOPLE.
-                    <br />
-                    SHARED POSSIBILITIES.
-                  </h2>
+                  <h2>A glimpse of our work</h2>
                 </div>
                 <p>
-                  A glimpse into the gatherings, learning
-                  <br />
-                  and everyday connections behind our work.
+                  Photos from our training sessions, community gatherings and
+                  outreach activities.
                 </p>
               </div>
               <div className="stories-grid">
@@ -667,77 +366,7 @@ export default function App() {
                 ))}
               </div>
             </section>
-            <section className="partners section" id="partners">
-              <div className="container">
-                <div className="section-heading">
-                  <div>
-                    <p className="eyebrow">05 / BETTER, TOGETHER</p>
-                    <h2>
-                      GOOD INTENTIONS.
-                      <br />
-                      GREATER POSSIBILITIES.
-                    </h2>
-                  </div>
-                  <div>
-                    <p>
-                      Lasting change takes more than one organisation.
-                      <br />
-                      We collaborate with partners who believe
-                      <br />
-                      in inclusive growth and stronger communities.
-                    </p>
-                    <button
-                      className="text-link"
-                      onClick={() => openContact("CSR partnership")}
-                    >
-                      Let’s build a partnership <ArrowUpRight size={18} />
-                    </button>
-                  </div>
-                </div>
-                <div className="partner-names">
-                  <span>
-                    Yardi <small>SOFTWARE</small>
-                  </span>
-                  <span>
-                    Lighthouse
-                    <br />
-                    <small>COMMUNITIES</small>
-                  </span>
-                  <span>
-                    GOYN <small>GLOBAL OPPORTUNITY YOUTH NETWORK</small>
-                  </span>
-                </div>
-                <p className="small-note">
-                  Collaborations documented in our foundation profile and
-                  program materials.
-                </p>
-                <div className="partnership-steps">
-                  {[
-                    [
-                      "01",
-                      "Find common ground",
-                      "Connect your organisation’s priorities with community needs.",
-                    ],
-                    [
-                      "02",
-                      "Shape a meaningful project",
-                      "Work with our team on a focused initiative and shared objectives.",
-                    ],
-                    [
-                      "03",
-                      "Stay connected to the work",
-                      "Build an ongoing relationship with the people and programs you support.",
-                    ],
-                  ].map(([n, t, d]) => (
-                    <div key={n}>
-                      <span>{n}</span>
-                      <h3>{t}</h3>
-                      <p>{d}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
+            <PartnershipSection onEnquire={() => openContact("CSR partnership")} />
             <section className="human-story container">
               <div className="human-photo photo-outreach">
                 <img
@@ -749,9 +378,9 @@ export default function App() {
               <div className="human-story-copy">
                 <p className="eyebrow">CHANGE HAS A HUMAN FACE</p>
                 <h2>
-                  IT STARTS WITH
+                  It starts with
                   <br />
-                  SHOWING UP.
+                  showing up.
                 </h2>
                 <p>
                   With someone who listens. A place to learn. A community that
@@ -770,11 +399,8 @@ export default function App() {
                 </button>
               </div>
             </section>
-            <Giving
-              onContinue={(donation) =>
-                setModal({ type: "donation", donation, step: "details" })
-              }
-            />
+            <TrustSection />
+            <Giving onContinue={goDonate} />
             <DonationTaxInfo />
             <section
               className="section container involvement"
@@ -783,9 +409,9 @@ export default function App() {
               <div>
                 <p className="eyebrow">06 / YOUR PART IN THE STORY</p>
                 <h2>
-                  THERE’S MORE THAN
+                  There’s more than
                   <br />
-                  ONE WAY TO GIVE.
+                  one way to give.
                 </h2>
                 <p>
                   Your time, experience or support can open
@@ -826,9 +452,9 @@ export default function App() {
                 <div>
                   <p className="eyebrow">A LITTLE MORE CLARITY</p>
                   <h2>
-                    GOOD QUESTIONS.
+                    Good questions.
                     <br />
-                    STRAIGHT ANSWERS.
+                    Straight answers.
                   </h2>
                   <p>Still curious about something?</p>
                   <a className="text-link" href="#contact">
@@ -866,9 +492,9 @@ export default function App() {
               <div className="container">
                 <p className="eyebrow">ONE BHARAT. COUNTLESS POSSIBILITIES.</p>
                 <h2>
-                  THE NEXT CHAPTER
+                  The next chapter
                   <br />
-                  STARTS WITH US.
+                  starts with us.
                 </h2>
                 <button
                   className="button button-navy"
@@ -889,7 +515,7 @@ export default function App() {
           />
         )}
       </main>
-      <footer id="contact">
+      <footer id="contact" className={isHome ? "journal-footer" : undefined}>
         <div className="container footer-grid">
           <div>
             <a
@@ -917,7 +543,11 @@ export default function App() {
           </div>
           <div>
             <h3>Explore</h3>
-            {[...nav, ["Donate", "/donate"]].map(([label, href]) => (
+            {[
+              ...nav,
+              ["Donate", "/donate"],
+              ["Get involved", "/get-involved"],
+            ].map(([label, href]) => (
               <a key={href} href={href}>
                 {label}
               </a>
@@ -943,56 +573,29 @@ export default function App() {
           </div>
           <div>
             <h3>Find us in Pune</h3>
-            <address>
-              A-430, Ideal Park, Gokul Nagar,
-              <br />
-              Katraj–Kondhwa Road,
-              <br />
-              Pune 411046, Maharashtra.
-            </address>
+            <address>Pune</address>
             <a
-              href="https://www.google.com/maps/search/?api=1&query=Ideal+Park+Gokul+Nagar+Katraj+Pune"
+              href="https://www.google.com/maps/search/?api=1&query=Pune"
               target="_blank"
               rel="noreferrer"
               className="text-link light-link"
             >
-              Get directions <ArrowUpRight size={16} />
+              View Pune on map <ArrowUpRight size={16} />
             </a>
           </div>
         </div>
         <div className="container footer-bottom">
           <span>© {new Date().getFullYear()} Ekatvabharat Foundation.</span>
-          <button onClick={() => setModal({ type: "privacy" })}>
-            Privacy & website information
-          </button>
+          <a href="/privacy">Privacy</a>
+          <a href="/donation-policy">Donation information</a>
+          <a href="/transparency">Transparency</a>
           <a href="#main">Back to top ↑</a>
         </div>
       </footer>
-      {modal?.type === "donation" && (
-        <Dialog
-          title={
-            modal.step === "details"
-              ? "Your next step to giving."
-              : "A little kindness. A lasting possibility."
-          }
-          onClose={close}
-        >
-          {modal.step === "details" ? (
-            <DonationDetails
-              donation={modal.donation}
-              onEdit={() => setModal({ ...modal, step: "choose" })}
-            />
-          ) : (
-            <DonationOptions
-              compact
-              initialAmount={String(modal.donation?.amount ?? 1000)}
-              initialCause={modal.donation?.cause}
-              onContinue={(donation) =>
-                setModal({ type: "donation", step: "details", donation })
-              }
-            />
-          )}
-        </Dialog>
+      {!modal && showContribute && path !== "/donate" && path !== "/admin" && (
+        <a className="mobile-contribute" href="/donate">
+          Make a contribution <ArrowUpRight size={18} />
+        </a>
       )}
       {modal?.type === "program" && (
         <Dialog title={programs[modal.index].name} onClose={close}>
@@ -1024,25 +627,6 @@ export default function App() {
           </p>
         </Dialog>
       )}
-      {modal?.type === "privacy" && (
-        <Dialog title="Privacy & website information" onClose={close}>
-          <p>
-            This website does not collect payments or store enquiry form entries
-            on a server. Enquiry details are passed to your email application
-            only when you choose to prepare an email.
-          </p>
-          <p>
-            Information you email to the foundation is used to respond to your
-            enquiry. Contact info@ekatvabharat.org for questions about your
-            information.
-          </p>
-          <p>
-            Program illustrations are AI-generated visuals supplied with this
-            project. Community photographs are from the foundation’s activity
-            archive. External map links open Google Maps.
-          </p>
-        </Dialog>
-      )}
       {modal?.type === "contact" && (
         <Dialog
           title={
@@ -1057,63 +641,7 @@ export default function App() {
               ? "Contact our team for verified contribution details and documentation. No payment is taken on this website."
               : "Tell us a little about your interest. We’ll help you find the right next step."}
           </p>
-          <form onSubmit={sendEmail}>
-            <div className="form-row">
-              <label>
-                Your name
-                <input
-                  name="name"
-                  autoComplete="name"
-                  required
-                  maxLength={100}
-                />
-              </label>
-              <label>
-                Email address
-                <input
-                  name="email"
-                  autoComplete="email"
-                  type="email"
-                  required
-                  maxLength={200}
-                />
-              </label>
-            </div>
-            <label>
-              I’m interested in
-              <input
-                name="interest"
-                defaultValue={modal.topic}
-                required
-                maxLength={150}
-              />
-            </label>
-            <label>
-              Your message
-              <textarea
-                name="message"
-                required
-                rows={3}
-                maxLength={3000}
-                placeholder="How would you like to get involved?"
-              />
-            </label>
-            <button className="button button-gold" type="submit">
-              Prepare email <ArrowUpRight size={18} />
-            </button>
-            <p className="small-note">
-              Opens your email app. Review and send your message there.
-            </p>
-            {emailReady && (
-              <p role="status" className="email-status">
-                Your email draft has been requested. If no email app opened,
-                write to{" "}
-                <a href="mailto:info@ekatvabharat.org">info@ekatvabharat.org</a>{" "}
-                or call <a href="tel:+919272799605">+91 92727 99605</a>. Your
-                message has not been submitted through this website.
-              </p>
-            )}
-          </form>
+          <EnquiryForm topic={modal.topic} />
         </Dialog>
       )}
     </>

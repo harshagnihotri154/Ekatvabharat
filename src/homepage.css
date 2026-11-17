@@ -1,0 +1,87 @@
+/* The journal direction is scoped to the homepage; all sections keep their interactions. */
+.home-journal { background:#faf9f5; color:#0b2032; }
+.home-journal h2 { font-family:Georgia, 'Times New Roman', serif; font-weight:400; text-transform:none; font-size:clamp(36px,4.2vw,60px); line-height:1.08; letter-spacing:-.045em; }
+.home-journal h3 { font-family:Georgia, 'Times New Roman', serif; font-weight:600; text-transform:none; letter-spacing:-.035em; }
+.home-journal .section { padding-top:76px; padding-bottom:76px; }
+.home-journal .eyebrow { font-size:10px; letter-spacing:.17em; color:#775023; line-height:1.7; }
+.home-journal .section-heading { align-items:end; gap:40px; margin-bottom:38px; }
+.home-journal .section-heading > p { font-size:14px; color:#52616b; line-height:1.8; }
+.home-journal .evidence-strip { background:transparent; padding-top:24px; padding-bottom:24px; border-bottom:1px solid #cdd2cb; }
+.home-journal .evidence-strip strong { font-family:Georgia,serif; font-size:22px; font-weight:400; letter-spacing:-.03em; }
+.home-journal .evidence-strip span { max-width:230px; line-height:1.5; font-size:12px; }
+.home-journal .earn-section { background:#edf0e8; color:#0b2032; padding-top:70px; }
+.home-journal .earn-grid { gap:64px; }
+.home-journal .earn-photo { height:440px; }
+.home-journal .earn-copy > p:not(.eyebrow) { color:#52616b; font-size:15px; line-height:1.8; }
+.home-journal .check-list { font-size:13px; line-height:1.6; }
+.home-journal .check-list svg { color:#526a51; flex-shrink:0; }
+.home-journal .course-list { border-color:#bcc7ba; margin-top:44px; flex-wrap:wrap; gap:22px; }
+.home-journal .course-list span, .home-journal .course-list button { color:#334b3e; }
+.home-journal .stories-grid { gap:32px; }
+.home-journal .story h3 { font-size:26px; }
+.home-journal .story > p:not(.eyebrow) { font-size:14px; line-height:1.8; }
+.home-journal .story-photo { border-radius:0; }
+.home-journal .partnership-section { background:#faf9f5; border-block:1px solid #dde1d7; padding:70px 0; }
+.home-journal .partnership-feature { background:transparent; color:#0b2032; gap:50px; align-items:center; }
+.home-journal .partnership-intro { padding:0; }
+.home-journal .partnership-section h2 { font-family:Georgia,serif; font-size:clamp(36px,4.2vw,60px); font-weight:400; }
+.home-journal .partnership-section h2 em { color:#0b2032; font-style:normal; }
+.home-journal .partnership-intro .partnership-kicker { color:#775023; }
+.home-journal .partnership-description { color:#52616b; }
+.home-journal .partnership-invitation { color:#52616b; }
+.home-journal .partnership-visual img { max-height:330px; }
+.home-journal .partnership-visual figcaption { background:#edf0e8; padding:18px 24px; }
+.home-journal .partnership-action:focus-visible { outline-color:#0b2032; }
+.home-journal .collaborator-strip { margin-top:32px; }
+.home-journal .partnership-path-heading h3 { font-family:Georgia,serif; font-size:34px; font-weight:400; }
+.home-journal .partnership-path h4 { font-family:Georgia,serif; font-size:23px; }
+.home-journal .human-story { padding-top:76px; padding-bottom:76px; gap:70px; }
+.home-journal .human-story-copy p { line-height:1.8; }
+.home-journal .human-story-copy p:nth-of-type(2) { font-family:Georgia,serif; font-size:25px; }
+.home-journal .trust-section { border-top:1px solid #dce0d8; gap:70px; }
+.home-journal .trust-links h3 { font-family:Inter,sans-serif; font-size:16px; }
+.home-journal .giving-section { background:#0b2032; }
+.home-journal .giving-grid { gap:70px; }
+.home-journal .giving-story h2 { color:#fff; }
+.home-journal .giving-section .eyebrow { color:#ffcf8a; }
+.home-journal .giving-panel { box-shadow:none; background:transparent; color:white; border-left:1px solid #52616b; padding:0 0 0 45px; }
+.home-journal .giving-panel > h3 { font-size:30px; font-weight:400; }
+.home-journal .giving-panel > p:not(.eyebrow),.home-journal .giving-summary,.home-journal .giving-form .small-note { color:#ced9de; }
+.home-journal .giving-amounts button { background:transparent; color:#fff; border-color:#86959f; border-radius:0; }
+.home-journal .giving-amounts button.active { background:#fff; color:#0b2032; }
+.home-journal .giving-form input,.home-journal .giving-form select { color:#0b2032; }
+.home-journal .tax-information { background:#edf0e8; }
+.home-journal .tax-info-grid h3 { font-size:23px; }
+.home-journal .involvement-options strong { font-family:Georgia,serif; font-size:23px; }
+.home-journal .faq-section { background:#f1f2ec; }
+.home-journal .faq h3 { font-family:Inter,sans-serif; font-size:15px; letter-spacing:0; }
+.home-journal .closing { background:#faf9f5; border-block:1px solid #bdc8c1; padding:60px 0; }
+.home-journal .closing h2 { max-width:700px; }
+.home-journal .closing .button { background:#ffa526; color:#0b2032; }
+.journal-footer { background:#faf9f5; color:#0b2032; }
+.journal-footer p,.journal-footer address,.journal-footer .footer-registration,.journal-footer .footer-bottom { color:#52616b; }
+.journal-footer .footer-grid h3,.journal-footer .footer-grid a,.journal-footer .footer-grid .text-link { color:#0b2032; }
+.journal-footer .footer-bottom { border-color:#ccd3cb; }
+@media(max-width:1000px) {
+ .home-journal .giving-grid,.home-journal .earn-grid,.home-journal .partnership-feature { gap:35px; }
+}
+@media(max-width:700px) {
+ .home-journal .section { padding-top:44px; padding-bottom:44px; }
+ .home-journal h2 { font-size:38px; line-height:1.1; }
+ .home-journal .evidence-strip { gap:24px; padding-top:25px; padding-bottom:28px; }
+ .home-journal .evidence-strip strong { font-size:21px; }
+ .home-journal .section-heading { align-items:start; gap:20px; margin-bottom:28px; }
+ .home-journal .earn-section { padding-top:44px; }
+ .home-journal .earn-photo { height:280px; }
+ .home-journal .course-list { gap:16px; margin-top:30px; }
+ .home-journal .partnership-section { padding:44px 0; }
+ .home-journal .partnership-feature { grid-template-columns:1fr; gap:28px; }
+ .home-journal .partnership-section h2 { font-size:39px; }
+ .home-journal .partnership-path-heading h3 { font-size:29px; }
+ .home-journal .human-story { padding-top:44px; padding-bottom:44px; gap:28px; }
+ .home-journal .trust-section { gap:28px; }
+ .home-journal .giving-grid { gap:35px; }
+ .home-journal .giving-panel { border-left:0; border-top:1px solid #52616b; padding:28px 0 0; }
+ .home-journal .closing { padding:40px 0; }
+ .home-journal .closing .button { position:static; margin-top:24px; }
+}

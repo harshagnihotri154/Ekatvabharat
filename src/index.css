@@ -654,66 +654,17 @@ h1 {
 .story .text-link {
   font-size: 11px;
 }
-.partners {
-  background: #e8edf0;
-}
-.partner-names {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  padding: 35px 0;
-  border-block: 1px solid #bfcad1;
-  margin-top: 40px;
-}
-.partner-names > span {
-  font-size: 33px;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  border-right: 1px solid #bfcad1;
-  padding: 0 45px;
-  line-height: 1.1;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  min-height: 65px;
-}
-.partner-names > span:first-child {
-  padding-left: 0;
-}
-.partner-names > span:last-child {
-  border: 0;
-}
-.partner-names small {
-  font-size: 9px;
-  letter-spacing: 0.16em;
-  margin-top: 9px;
-  display: block;
-}
-.partnership-steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 50px;
-  margin-top: 57px;
-}
-.partnership-steps > div {
-  position: relative;
-  padding-left: 38px;
-}
-.partnership-steps > div > span {
-  position: absolute;
-  left: 0;
-  top: 2px;
-  font-size: 11px;
-  color: #506574;
-}
-.partnership-steps h3 {
-  font-size: 16px;
-  margin-bottom: 12px;
-}
-.partnership-steps p {
-  font-size: 12px;
-  color: var(--muted);
-  margin: 0;
-}
+
+
+
+
+
+
+
+
+
+
+
 .involvement {
   display: grid;
   grid-template-columns: 1fr 1.1fr;
@@ -1145,16 +1096,9 @@ footer {
   .story h3 {
     font-size: 19px;
   }
-  .partner-names > span {
-    font-size: 26px;
-    padding: 0 25px;
-  }
-  .partner-names small {
-    font-size: 8px;
-  }
-  .partnership-steps {
-    gap: 20px;
-  }
+
+
+
   .involvement,
   .faq-grid {
     gap: 40px;
@@ -1438,28 +1382,11 @@ footer {
   .story > p:not(.eyebrow) {
     margin-bottom: 15px;
   }
-  .partners .section-heading .text-link {
-    margin-top: 22px;
-  }
-  .partner-names {
-    gap: 0;
-    padding: 25px 0;
-  }
-  .partner-names > span {
-    padding: 0 12px;
-    font-size: 19px;
-    min-height: 60px;
-  }
-  .partner-names small {
-    font-size: 6px;
-    letter-spacing: 0.07em;
-    line-height: 1.6;
-  }
-  .partnership-steps {
-    grid-template-columns: 1fr;
-    gap: 28px;
-    margin-top: 35px;
-  }
+
+
+
+
+
   .involvement,
   .faq-grid {
     display: block;
@@ -2235,30 +2162,11 @@ footer {
   color: #925100;
   border-bottom: 2px solid var(--gold);
 }
-.inner-page-hero {
-  background: var(--navy);
-  color: white;
-  padding: 38px 0 65px;
-}
-.breadcrumbs {
-  display: flex;
-  gap: 12px;
-  font-size: 11px;
-  color: #c4d2db;
-  margin-bottom: 45px;
-}
-.breadcrumbs a {
-  text-decoration: underline;
-}
-.inner-page-hero h1 {
-  font-size: clamp(48px, 6vw, 88px);
-  max-width: 1100px;
-}
-.inner-page-hero .container > p:last-child {
-  color: #d0dce3;
-  max-width: 650px;
-  margin: 25px 0 0;
-}
+
+
+
+
+
 .page-split {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -2449,18 +2357,10 @@ footer {
   }
 }
 @media (max-width: 600px) {
-  .inner-page-hero {
-    padding: 25px 0 45px;
-  }
-  .breadcrumbs {
-    margin-bottom: 30px;
-  }
-  .inner-page-hero h1 {
-    font-size: 49px;
-  }
-  .inner-page-hero .container > p:last-child {
-    font-size: 14px;
-  }
+
+
+
+
   .page-split,
   .page-three,
   .community-page-grid,

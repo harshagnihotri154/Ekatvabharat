@@ -1,6 +1,20 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 const html = await readFile("dist/index.html", "utf8");
 const pages = {
+  transparency: [
+    "Transparency",
+    "Understand our foundation, historical activity records and documentation requests.",
+  ],
+  "get-involved": [
+    "Get involved",
+    "Explore volunteering, learning and partnership opportunities in Pune.",
+  ],
+  privacy: ["Privacy", "How we use enquiry, donation and payment information."],
+  "donation-policy": [
+    "Donation information",
+    "Payment confirmation, contribution preferences, refunds and documentation.",
+  ],
+  admin: ["Foundation administration", "Restricted foundation workspace."],
   about: [
     "Our Story",
     "Meet the mission and values of Ekatvabharat Foundation, a Pune-based nonprofit established in 2021.",
@@ -19,7 +33,7 @@ const pages = {
   ],
   donate: [
     "Donate",
-    "Support Ekatvabharat Foundation with direct bank-transfer donation options and documentation guidance.",
+    "Support Ekatvabharat Foundation through available online and bank-transfer contribution options.",
   ],
   contact: [
     "Contact",
@@ -30,7 +44,13 @@ for (const [path, [title, description]] of Object.entries(pages)) {
   await mkdir(`dist/${path}`, { recursive: true });
   await writeFile(
     `dist/${path}/index.html`,
-    html
+    (path === "admin"
+      ? html.replace(
+          "</head>",
+          '<meta name="robots" content="noindex,nofollow"></head>',
+        )
+      : html
+    )
       .replace(
         /<title>.*?<\/title>/s,
         `<title>${title} | Ekatvabharat Foundation</title>`,

@@ -1,0 +1,111 @@
+.interior-public { background:#fff; color:#112b3c; }
+.interior-pages #page-content { scroll-margin-top:110px; }
+.page-intro-banner { background:#f6f3eb; padding:26px 0 48px; }
+.page-trail { display:flex; gap:12px; align-items:center; color:#59636a; font-size:11px; margin-bottom:32px; }
+.page-trail a { text-decoration:underline; text-underline-offset:3px; color:#112b3c; }
+.page-intro-layout { display:grid; grid-template-columns:1.1fr 1fr; align-items:center; gap:64px; }
+.page-intro-banner .page-label { font-size:10px; line-height:1.6; letter-spacing:.13em; font-weight:700; text-transform:uppercase; color:#825013; margin:0 0 22px; }
+.page-intro-banner h1 { font-family:Inter,sans-serif; font-size:clamp(38px,4.1vw,59px); line-height:1.12; font-weight:600; letter-spacing:-.045em; text-transform:none; color:#112b3c; margin:0; }
+.page-intro-banner h1 span { display:block; }
+.page-intro-banner .page-title-accent { font-family:Georgia,serif; font-weight:400; font-style:italic; margin-top:7px; }
+.page-intro-description { font-size:16px; line-height:1.8; color:#52616b; max-width:530px; margin:25px 0 0; }
+.page-intro-action { display:inline-flex; align-items:center; gap:20px; min-height:48px; margin-top:24px; padding-bottom:4px; border-bottom:1px solid #112b3c; font-size:13px; font-weight:600; text-decoration:none; }
+.page-intro-visual { margin:0; min-width:0; }
+.page-intro-visual img { width:100%; height:330px; object-fit:cover; object-position:center 25%; display:block; }
+.page-intro-visual figcaption { display:flex; justify-content:space-between; gap:16px; background:#0b2032; color:#fff; padding:18px 20px; font-size:12px; line-height:1.6; }
+.page-intro-visual small { font-size:9px; color:#d0dce3; white-space:nowrap; }
+.page-intro-banner.is-compact { padding-bottom:40px; border-bottom:1px solid #e1ded4; }
+.is-compact .page-intro-layout { display:block; }
+.is-compact .page-intro-copy { max-width:1000px; }
+.is-compact h1 { font-size:clamp(36px,3.8vw,54px); }
+.is-compact h1 span { display:inline; }
+.is-compact h1 span + span::before { content:" "; }
+.is-compact .page-intro-description { max-width:730px; margin-top:18px; }
+.interior-public > .section, .interior-public > section.section { padding-top:70px; padding-bottom:70px; }
+.interior-public h2 { font-family:Inter,sans-serif; font-size:clamp(28px,3vw,42px); font-weight:600; letter-spacing:-.04em; line-height:1.2; text-transform:none; }
+.interior-public h3,.interior-public h4 { font-family:Inter,sans-serif; text-transform:none; letter-spacing:-.025em; line-height:1.4; }
+.interior-public .page-split { gap:64px; }
+.interior-public .page-split p { font-size:15px; line-height:1.85; }
+.interior-public .page-split h2 { margin-bottom:24px; }
+.interior-public .page-archive { aspect-ratio:auto; padding:16px; background:#f6f3eb; }
+.interior-public .page-archive img { position:static; display:block; width:100%; max-width:100%; height:auto; }
+.interior-public .page-tinted { background:#f6f3eb; }
+.interior-public .page-three { gap:30px; margin-top:28px; }
+.interior-public .page-three article { border-top:2px solid #ad7628; padding:26px 0 0; }
+.interior-public .page-three h3 { font-size:24px; margin:0 0 18px; }
+.interior-public .page-three p { line-height:1.85; }
+.program-jump-links { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:58px; }
+.program-jump-links a { border:1px solid #dadfdc; padding:18px; display:flex; align-items:center; gap:12px; min-height:76px; font-size:12px; font-weight:600; }
+.program-jump-links a:hover { background:#f6f3eb; border-color:#a86814; }
+.program-jump-links span { font-size:11px; color:#825013; }
+.program-jump-links svg { flex-shrink:0; margin-left:auto; }
+.interior-public .program-detail { align-items:start; gap:54px; padding-bottom:50px; margin-bottom:50px; }
+.interior-public .program-detail:nth-of-type(even) > div:first-child { order:2; }
+.interior-public .page-program-photo { height:390px; object-fit:cover; }
+.interior-public .program-detail h2 { font-size:34px; margin-bottom:18px; }
+.interior-public .program-detail h3 { font-size:19px; font-weight:500; margin:0 0 18px; }
+.interior-public .evidence-note { border-left:3px solid #ad7628; background:#f6f3eb; padding:20px 24px; }
+.interior-public .evidence-note p { font-size:13px; }
+.interior-public .community-page-grid { gap:32px; }
+.interior-public .community-page-grid .story { border-bottom:1px solid #ccd5d7; padding-bottom:24px; }
+.interior-public .story h3 { font-size:24px; }
+.interior-public .partnership-menu { background:#0b2032; color:#fff; padding:14px 30px; }
+.interior-public .partnership-menu > div { padding:24px 0; border-color:#3f5362; font-size:15px; }
+.interior-public .partnership-menu svg { color:#ffc16a; flex-shrink:0; }
+.interior-public .contact-page-grid { gap:50px; }
+.interior-public .contact-page-grid article { background:#f6f3eb; padding:36px; border-top:3px solid #ad7628; min-width:0; }
+.interior-public .contact-page-grid h2 { font-size:34px; margin:18px 0 26px; }
+.interior-public .contact-page-grid h3 { margin:25px 0 12px; }
+.interior-public .contact-direct { font-size:clamp(17px,2vw,26px); overflow-wrap:anywhere; }
+.interior-public .contact-topics { gap:0; }
+.interior-public .contact-topics .text-link { padding:16px 0; border-bottom:1px solid #cdd2ce; justify-content:space-between; }
+.interior-public .donation-layout { gap:7%; }
+.interior-public .checkout-panel { border:1px solid #dce0dc; border-top:4px solid #ffa526; padding:32px; }
+.interior-public .checkout-panel h3 { font-size:25px; }
+.interior-public .document-list article { background:#fff; padding:28px; border:1px solid #dce0dc; border-top:3px solid #ad7628; }
+.interior-public .document-list h3 { margin-top:0; }
+.interior-public .participation-grid article { border-top:3px solid #ad7628; padding-top:22px; }
+.interior-public .policy-copy { max-width:850px; }
+.interior-public .policy-copy p { font-size:15px; line-height:1.9; }
+.interior-public .policy-copy h3 { padding-top:16px; font-size:21px; }
+.interior-public .page-cta { background:#0b2032; color:#fff; padding:44px 0; }
+.interior-public .page-cta h2 { font-size:clamp(28px,3vw,40px); }
+.interior-public .page-cta .button { background:#ffa526; color:#0b2032; }
+@media(max-width:1000px) {
+ .page-intro-layout { gap:32px; }
+ .page-intro-visual img { height:300px; }
+ .page-intro-visual figcaption { flex-wrap:wrap; gap:4px; }
+ .interior-public .page-split { gap:32px; }
+ .program-jump-links { grid-template-columns:repeat(2,1fr); }
+ .interior-public .contact-page-grid { gap:24px; }
+ .interior-public .contact-page-grid article { padding:26px; }
+}
+@media(max-width:700px) {
+ .page-intro-banner { padding:22px 0 30px; }
+ .page-trail { margin-bottom:26px; }
+ .page-intro-layout { grid-template-columns:1fr; gap:28px; }
+ .page-intro-banner h1 { font-size:39px; }
+ .page-intro-banner .page-label { font-size:9px; margin-bottom:18px; }
+ .page-intro-description { font-size:15px; line-height:1.7; margin-top:22px; }
+ .page-intro-visual img { height:240px; }
+ .page-intro-visual figcaption { padding:15px; font-size:11px; }
+ .is-compact h1 { font-size:34px; }
+ .is-compact h1 span { display:block; }
+ .is-compact h1 span + span::before { content:none; }
+ .interior-public > .section, .interior-public > section.section { padding-top:40px; padding-bottom:40px; }
+ .interior-public .page-split,.interior-public .page-three,.interior-public .community-page-grid,.interior-public .contact-page-grid { grid-template-columns:1fr; gap:30px; }
+ .interior-public h2 { font-size:30px; }
+ .interior-public .page-split p { font-size:14px; }
+ .program-jump-links { grid-template-columns:1fr; gap:8px; margin-bottom:35px; }
+ .program-jump-links a { min-height:54px; padding:14px 16px; }
+ .interior-public .program-detail { gap:20px; padding-bottom:32px; margin-bottom:32px; }
+ .interior-public .program-detail:nth-of-type(even) > div:first-child { order:0; }
+ .interior-public .page-program-photo { height:250px; }
+ .interior-public .program-detail h2 { font-size:29px; }
+ .interior-public .contact-page-grid article { padding:24px; }
+ .interior-public .contact-topics { grid-template-columns:1fr; }
+ .interior-public .checkout-panel { padding:24px 18px; order:0; }
+ .interior-public .donation-context { order:1; }
+ .interior-public .page-cta .container { flex-direction:column; align-items:start; gap:24px; }
+ .interior-public .document-list article { padding:23px; }
+}

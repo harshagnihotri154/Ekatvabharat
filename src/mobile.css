@@ -324,30 +324,12 @@
   .story .eyebrow {
     font-size: 10px;
   }
-  .partner-names {
-    grid-template-columns: 1fr;
-    gap: 23px;
-    padding: 28px 0;
-  }
-  .partner-names > span {
-    border: 0;
-    border-bottom: 1px solid #bfccd1;
-    padding: 0 0 23px;
-    font-size: 29px;
-    min-height: 0;
-  }
-  .partner-names > span:last-child {
-    padding-bottom: 0;
-  }
-  .partner-names small {
-    font-size: 9px;
-  }
-  .partnership-steps h3 {
-    font-size: 17px;
-  }
-  .partnership-steps p {
-    font-size: 13px;
-  }
+
+
+
+
+
+
   .human-story {
     padding-block: 50px;
     gap: 26px;

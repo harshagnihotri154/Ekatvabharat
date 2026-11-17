@@ -7,47 +7,53 @@ import {
   MapPin,
   Check,
 } from "lucide-react";
-import Giving, { DonationTaxInfo } from "./Giving";
+import PageIntro from "./PageIntro";
+import "./ContentPages.css";
+import DonationCheckout from "./DonationCheckout";
+import InformationPages, { informationPages } from "./InformationPages";
+import AdminPage from "./AdminPage";
+import { programDetails } from "../data/programs";
 
 export const pageInfo = {
+  ...informationPages,
   "/about": {
     title: "Our Story",
-    heading: "ROOTED IN COMMUNITY.\nUNITED BY POSSIBILITY.",
+    heading: "Rooted in community.\nUnited by possibility.",
     description:
       "Get to know Ekatvabharat Foundation: a Pune-based nonprofit working to bridge opportunity gaps and support independent, dignified lives.",
     image: "outreach",
   },
   "/programs": {
     title: "Programs",
-    heading: "PRACTICAL SKILLS.\nSHARED PROGRESS.",
+    heading: "Practical skills.\nShared progress.",
     description:
       "Explore our work in livelihoods, agriculture, healthcare, and women and youth empowerment.",
     image: "slide_skilling",
   },
   "/community": {
     title: "Community",
-    heading: "THE PEOPLE BEHIND\nTHE POSSIBILITIES.",
+    heading: "The people behind\nthe possibilities.",
     description:
       "Explore photographs and moments from our community activities, learning spaces and outreach initiatives.",
     image: "community",
   },
   "/partnerships": {
     title: "CSR Partnerships",
-    heading: "BRING YOUR PURPOSE.\nBUILD WITH OURS.",
+    heading: "Bring your purpose.\nBuild with ours.",
     description:
       "Collaborate with Ekatvabharat Foundation on skills, community care and inclusive development.",
     image: "slide_agri",
   },
   "/donate": {
     title: "Donate",
-    heading: "YOUR KINDNESS.\nSOMEONE’S NEXT STEP.",
+    heading: "Your kindness.\nSomeone’s next step.",
     description:
-      "Choose a cause, make a direct contribution and connect with our team for donation documentation.",
+      "Choose an amount and cause, explore available payment options and understand how your contribution is confirmed.",
     image: "learning",
   },
   "/contact": {
     title: "Contact",
-    heading: "A CONVERSATION\nCAN START A CHANGE.",
+    heading: "A conversation\ncan start a change.",
     description:
       "Reach our Pune team for course enquiries, volunteering, donations and partnerships.",
     image: "outreach",
@@ -74,32 +80,13 @@ export default function ContentPages({
       </section>
     );
   return (
-    <>
-      <section className="inner-page-hero">
-        <div className="container">
-          <nav className="breadcrumbs" aria-label="Breadcrumb">
-            <a href="/">Home</a>
-            <span aria-hidden="true">/</span>
-            <span aria-current="page">{page.title}</span>
-          </nav>
-          <p className="eyebrow light">
-            EKATVABHARAT FOUNDATION / {page.title.toUpperCase()}
-          </p>
-          <h1>
-            {page.heading.split("\n").map((line, i) => (
-              <React.Fragment key={line}>
-                {i > 0 && <br />}
-                {line}
-              </React.Fragment>
-            ))}
-          </h1>
-          <p>{page.description}</p>
-        </div>
-      </section>
+    <div className={`interior-pages ${path === "/admin" ? "interior-admin" : "interior-public"}`}>
+      <PageIntro page={page} path={path} />
+      <div id="page-content" />
       {path === "/about" && (
         <>
           <section className="container section page-split">
-            <div className="page-archive photo-outreach">
+            <div className="page-archive">
               <img
                 src={img("outreach")}
                 alt="Community members and the foundation team at an outreach activity"
@@ -108,9 +95,9 @@ export default function ContentPages({
             <div>
               <p className="eyebrow">OUR JOURNEY / SINCE 2021</p>
               <h2>
-                OPPORTUNITY SHOULD
+                Opportunity should
                 <br />
-                BELONG TO EVERYONE.
+                belong to everyone.
               </h2>
               <p>
                 Established as a Section 8 company in 2021, Ekatvabharat
@@ -162,9 +149,9 @@ export default function ContentPages({
             <div>
               <p className="eyebrow">ACCOUNTABILITY MATTERS</p>
               <h2>
-                KNOW THE FOUNDATION
+                Know the foundation
                 <br />
-                YOU’RE SUPPORTING.
+                you’re supporting.
               </h2>
             </div>
             <div>
@@ -201,46 +188,56 @@ export default function ContentPages({
       )}
       {path === "/programs" && (
         <section className="container section program-details-list">
-          {programs.map((p, i) => (
+          <nav className="program-jump-links" aria-label="Program focus areas">{programDetails.map((program, i) => <a key={program.slug} href={`#${program.slug}`}><span>0{i + 1}</span>{program.name}<ArrowRight size={16} aria-hidden="true" /></a>)}</nav>
+          {programDetails.map((program, i) => (
             <article
               className="page-split program-detail"
-              id={["skills", "agriculture", "healthcare", "empowerment"][i]}
-              key={p.name}
+              id={program.slug}
+              key={program.slug}
             >
-              <img
-                className="page-program-photo"
-                src={img(p.image)}
-                alt={`Illustration of ${p.name.toLowerCase()}`}
-                loading={i ? "lazy" : "eager"}
-              />
               <div>
-                <p className="eyebrow">0{i + 1} / OUR WORK</p>
-                <h2>{p.name.toUpperCase()}</h2>
-                <p>{p.detail}</p>
-                {i === 0 && (
-                  <>
-                    <h3>Earn & Learn · Vadgaon, Pune</h3>
-                    <p>
-                      Ask about food and beverage service, professional cookery,
-                      café management, sales and digital skills. Our team can
-                      share current eligibility, fees and batch availability.
-                    </p>
-                  </>
-                )}
-                <button
-                  className="button button-gold"
-                  onClick={() => openContact(p.name)}
-                >
-                  Enquire about this program <ArrowUpRight size={18} />
-                </button>
+                <img
+                  className="page-program-photo"
+                  src={img(program.image)}
+                  alt={`Illustration representing ${program.name.toLowerCase()}`}
+                  loading="lazy"
+                />
+                <p className="image-note">Illustrative program image</p>
+              </div>
+              <div>
+                <p className="eyebrow">
+                  0{i + 1} / {program.status}
+                </p>
+                <h2>{program.name}</h2>
+                <h3>{program.summary}</h3>
+                <p>{program.description}</p>
+                <ul className="program-activities">
+                  {program.activities.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <div className="evidence-note">
+                  <strong>What our records show</strong>
+                  <p>{program.evidence}</p>
+                </div>
+                <p>{program.next}</p>
+                <div className="action-row">
+                  <button
+                    className="button button-gold"
+                    onClick={() => openContact(program.name)}
+                  >
+                    Enquire about this program <ArrowUpRight size={18} />
+                  </button>
+                  <a
+                    className="text-link"
+                    href={`/donate?${new URLSearchParams({ cause: program.name })}`}
+                  >
+                    Support this focus area <ArrowRight size={17} />
+                  </a>
+                </div>
               </div>
             </article>
           ))}
-          <p className="image-note">
-            Program visuals are illustrative. See our{" "}
-            <a href="/community">community archive</a> for photographs from
-            foundation activities.
-          </p>
         </section>
       )}
       {path === "/community" && (
@@ -249,9 +246,9 @@ export default function ContentPages({
             <div>
               <p className="eyebrow">FROM THE FOUNDATION ARCHIVE</p>
               <h2>
-                MOMENTS THAT
+                Moments that
                 <br />
-                BRING US TOGETHER.
+                bring us together.
               </h2>
             </div>
             <p>
@@ -296,9 +293,9 @@ export default function ContentPages({
             <div>
               <p className="eyebrow">PURPOSE INTO PRACTICE</p>
               <h2>
-                BUILD SOMETHING
+                Build something
                 <br />
-                THAT MATTERS.
+                that matters.
               </h2>
               <p>
                 Connect your organisation’s priorities with community needs.
@@ -334,8 +331,8 @@ export default function ContentPages({
                   <h3>Yardi Software</h3>
                   <p>
                     Collaboration on hospitality skills and women’s empowerment.
-                    Foundation materials document four completed batches in the
-                    PMC area.
+                    The 2024–25 presentation records four completed batches in
+                    the PMC area.
                   </p>
                 </article>
                 <article>
@@ -358,7 +355,7 @@ export default function ContentPages({
           </section>
           <section className="container section">
             <p className="eyebrow">START A CONVERSATION</p>
-            <h2>LET’S SHAPE THE NEXT PROJECT.</h2>
+            <h2>Let’s shape the next project.</h2>
             <p className="page-intro">
               Tell us your focus area, community or location, proposed timeline
               and how you’d like to participate. Our team will discuss scope,
@@ -373,47 +370,36 @@ export default function ContentPages({
           </section>
         </>
       )}
-      {path === "/donate" && (
-        <>
-          <Giving
-            onContinue={(donation) =>
-              setModal({ type: "donation", donation, step: "details" })
-            }
-          />
-          <DonationTaxInfo />
-        </>
+      {path === "/donate" && <DonationCheckout />}
+      {informationPages[path] && path !== "/admin" && (
+        <InformationPages path={path} openContact={openContact} />
       )}
+      {path === "/admin" && <AdminPage />}
       {path === "/contact" && (
         <section className="container section contact-page-grid">
           <article>
             <MapPin size={28} />
-            <h2>VISIT US.</h2>
+            <h2>Visit us.</h2>
             <h3>Registered office</h3>
-            <address>
-              A-430, Ideal Park, Gokul Nagar,
-              <br />
-              Katraj–Kondhwa Road,
-              <br />
-              Pune 411046, Maharashtra.
-            </address>
+            <address>Pune</address>
             <a
               className="text-link"
-              href="https://www.google.com/maps/search/?api=1&query=Ideal+Park+Gokul+Nagar+Katraj+Pune"
+              href="https://www.google.com/maps/search/?api=1&query=Pune"
               target="_blank"
               rel="noreferrer"
             >
-              Get directions <ArrowUpRight size={17} />
+              View Pune on map <ArrowUpRight size={17} />
             </a>
             <h3>Training campus</h3>
             <p>
-              Vadgaon, Sinhagad Road, Pune.
+              Pune.
               <br />
               Contact us to arrange a visit and confirm directions.
             </p>
           </article>
           <article>
             <Mail size={28} />
-            <h2>LET’S TALK.</h2>
+            <h2>Let’s talk.</h2>
             <a className="contact-direct" href="mailto:info@ekatvabharat.org">
               info@ekatvabharat.org
             </a>
@@ -424,8 +410,8 @@ export default function ContentPages({
               +91 96577 23904
             </a>
             <p>
-              Choose what you’d like to discuss. Your enquiry opens as a draft
-              in your email application.
+              Choose what you’d like to discuss. Your enquiry is saved securely
+              for the foundation team to follow up.
             </p>
             <div className="contact-topics">
               {[
@@ -447,10 +433,10 @@ export default function ContentPages({
           </article>
         </section>
       )}
-      {path !== "/donate" && (
+      {path !== "/donate" && path !== "/admin" && (
         <section className="page-cta">
           <div className="container">
-            <h2>THERE’S A PLACE FOR YOU HERE.</h2>
+            <h2>There’s a place for you here.</h2>
             <a
               className="button button-navy"
               href={path === "/contact" ? "/donate" : "/contact"}
@@ -461,6 +447,6 @@ export default function ContentPages({
           </div>
         </section>
       )}
-    </>
+    </div>
   );
 }
