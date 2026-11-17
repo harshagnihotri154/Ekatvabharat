@@ -555,8 +555,8 @@ export default function App() {
           </div>
           <div>
             <h3>Let’s talk</h3>
-            <a href="mailto:info@ekatvabharat.org">
-              <Mail size={16} /> info@ekatvabharat.org
+            <a href="mailto:info@ekatvabharatfoundation.com">
+              <Mail size={16} /> info@ekatvabharatfoundation.com
             </a>
             <a href="tel:+919272799605">
               <Phone size={16} /> +91 92727 99605

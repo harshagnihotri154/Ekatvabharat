@@ -4,6 +4,7 @@ import { causes, maxDonationPaise } from "../../shared/causes";
 import { DonationDetails, DonationOptions, DonationTaxInfo } from "./Giving";
 import { api } from "./EnquiryForm";
 import DonationGuidance from "./DonationGuidance";
+import { trackSuccess } from "../analytics";
 let checkoutScript;
 function loadCheckout() {
   if (window.Razorpay) return Promise.resolve();
@@ -96,6 +97,11 @@ export default function DonationCheckout() {
       if (mounted.current) setError(e.message);
     }
   }
+  useEffect(() => {
+    if (result?.status === "paid" && result.mode === "live") {
+      trackSuccess("donation_success", result.id);
+    }
+  }, [result]);
   useEffect(() => {
     if (result?.status !== "pending" || !statusRef) return;
     const timer = setInterval(() => refresh(statusRef), 5000);

@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
+import { trackSuccess } from "../analytics";
 export async function api(path, options = {}) {
   const response = await fetch(path, {
     ...options,
@@ -33,6 +34,7 @@ export default function EnquiryForm({ topic = "General enquiry" }) {
         }),
       });
       setState({ id: result.id });
+      trackSuccess("enquiry_success", result.id);
     } catch (error) {
       setState({ error: error.message });
     }
@@ -114,7 +116,7 @@ export default function EnquiryForm({ topic = "General enquiry" }) {
       {state.error && (
         <p role="alert" className="form-error">
           {state.error} You can also email{" "}
-          <a href="mailto:info@ekatvabharat.org">info@ekatvabharat.org</a>.
+          <a href="mailto:info@ekatvabharatfoundation.com">info@ekatvabharatfoundation.com</a>.
         </p>
       )}
     </form>

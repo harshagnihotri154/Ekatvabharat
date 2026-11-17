@@ -188,7 +188,7 @@ export function DonationDetails({ donation, onEdit }) {
       </p>
       <a
         className="button button-gold"
-        href={`mailto:info@ekatvabharat.org?subject=${subject}&body=${body}`}
+        href={`mailto:info@ekatvabharatfoundation.com?subject=${subject}&body=${body}`}
       >
         <Mail size={17} />
         {donationBankConfirmed
@@ -227,7 +227,7 @@ export function DonationTaxInfo() {
             </p>
             <a
               className="text-link"
-              href="mailto:info@ekatvabharat.org?subject=Donation%20tax%20approval%20and%20certificate%20enquiry"
+              href="mailto:info@ekatvabharatfoundation.com?subject=Donation%20tax%20approval%20and%20certificate%20enquiry"
             >
               Request tax documents <ArrowRight size={17} />
             </a>

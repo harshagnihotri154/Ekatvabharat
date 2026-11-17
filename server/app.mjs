@@ -91,7 +91,7 @@ export function createApp({ db, gateway, env = process.env }) {
           `receipt:${row.id}`,
           row.email,
           `${row.mode === "test" ? "[TEST — no money collected] " : ""}Your Ekatvabharat contribution acknowledgement`,
-          `Thank you, ${row.name}.\n\nWe have confirmed your contribution of INR ${(row.amount / 100).toFixed(2)}.\nReference: ${receipt}\nPayment: ${payment.id}\nCause preference: ${row.cause}\n\nThis payment acknowledgement is not a statutory tax certificate. Contact info@ekatvabharat.org for applicable documentation.\nEkatvabharat Foundation`,
+          `Thank you, ${row.name}.\n\nWe have confirmed your contribution of INR ${(row.amount / 100).toFixed(2)}.\nReference: ${receipt}\nPayment: ${payment.id}\nCause preference: ${row.cause}\n\nThis payment acknowledgement is not a statutory tax certificate. Contact info@ekatvabharatfoundation.com for applicable documentation.\nEkatvabharat Foundation`,
         );
     return tx.findOne("donations", { id: row.id });
   });
@@ -341,7 +341,7 @@ export function createApp({ db, gateway, env = process.env }) {
       await db.transaction(async (tx) => {
         await tx.insert("enquiries", { id, request_key: data.requestKey, name: data.name, email: data.email,
           topic: data.topic, message: data.message, created_at: now(), status: "new", consent_version: "2026-11-15" });
-        await queue(tx, `enquiry:${id}`, env.CONTACT_EMAIL || "info@ekatvabharat.org",
+        await queue(tx, `enquiry:${id}`, env.CONTACT_EMAIL || "info@ekatvabharatfoundation.com",
           `Website enquiry: ${data.topic}`, `${data.name}\n${data.email}\nReference: ${id}\n\n${data.message}`);
       });
     } catch (error) {

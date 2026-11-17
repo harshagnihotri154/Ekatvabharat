@@ -223,7 +223,7 @@ export default function InformationPages({ path, openContact }) {
         <h3>Your choices</h3>
         <p>
           Contact{" "}
-          <a href="mailto:info@ekatvabharat.org">info@ekatvabharat.org</a> to
+          <a href="mailto:info@ekatvabharatfoundation.com">info@ekatvabharatfoundation.com</a> to
           ask about access, correction or deletion of your information.
           Accounting and statutory obligations may require some donation records
           to be retained. A form submission does not subscribe you to marketing.
@@ -279,7 +279,7 @@ export default function InformationPages({ path, openContact }) {
         <h3>Refund requests and payment problems</h3>
         <p>
           If a contribution was duplicated, made in error, or has an unresolved
-          payment issue, contact info@ekatvabharat.org or +91 92727 99605 with
+          payment issue, contact info@ekatvabharatfoundation.com or +91 92727 99605 with
           the date, amount and payment reference. Do not send your PIN or OTP.
           The team will review the transaction and explain the available next
           steps. A refund is not guaranteed by submitting a request; approved

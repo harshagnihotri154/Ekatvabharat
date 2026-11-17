@@ -65,6 +65,7 @@ test("enquiry success only appears after persistence and errors preserve input",
     "Temporarily unavailable",
   );
   await expect(page.getByLabel("Your name")).toHaveValue("Test Volunteer");
+  expect(await page.evaluate(() => window.dataLayer.filter(e => e.event === "enquiry_success"))).toEqual([]);
   await page.route("**/api/enquiries", (route) =>
     route.fulfill({
       status: 201,
@@ -76,6 +77,7 @@ test("enquiry success only appears after persistence and errors preserve input",
   await expect(page.getByRole("status")).toContainText(
     "Your enquiry is saved.",
   );
+  expect(await page.evaluate(() => window.dataLayer.filter(e => e.event === "enquiry_success"))).toEqual([{event: "enquiry_success"}]);
 });
 test("checkout handles captured confirmation without exposing gateway secrets", async ({
   page,
@@ -101,6 +103,7 @@ test("checkout handles captured confirmation without exposing gateway secrets", 
       json: {
         id: "test-donation",
         status: "paid",
+        mode: "test",
         amount: 100000,
         cause: "Where it is needed most",
         receipt: "EBF-test",
@@ -137,4 +140,11 @@ test("checkout handles captured confirmation without exposing gateway secrets", 
   await expect(page.getByRole("status")).toContainText(
     "Your payment is confirmed",
   );
+  expect(await page.evaluate(() => window.dataLayer.filter(e => e.event === "donation_success"))).toEqual([]);
+});
+
+// Keep synthetic test visits and submissions out of production analytics.
+test.beforeEach(async ({ page }) => {
+  await page.route("https://www.googletagmanager.com/**", route =>
+    route.fulfill({ contentType: "application/javascript", body: "" }));
 });

@@ -400,8 +400,8 @@ export default function ContentPages({
           <article>
             <Mail size={28} />
             <h2>Let’s talk.</h2>
-            <a className="contact-direct" href="mailto:info@ekatvabharat.org">
-              info@ekatvabharat.org
+            <a className="contact-direct" href="mailto:info@ekatvabharatfoundation.com">
+              info@ekatvabharatfoundation.com
             </a>
             <a className="contact-direct" href="tel:+919272799605">
               +91 92727 99605
