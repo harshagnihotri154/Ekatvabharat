@@ -216,8 +216,9 @@ export default function InformationPages({ path, openContact }) {
           contribution’s payment status. Administration uses an essential,
           time-limited session cookie. The service counts donation-page and
           checkout starts in aggregate; these counters do not contain donor
-          names or email addresses. The website does not add advertising
-          trackers.
+          names or email addresses. The website also loads Google Tag Manager
+          to manage measurement tags. The measurements and browser storage used
+          by those tags depend on the tags configured and published for this site.
         </p>
         <h3>Your choices</h3>
         <p>
