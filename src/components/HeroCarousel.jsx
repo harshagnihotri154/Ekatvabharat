@@ -42,7 +42,7 @@ function SlideContent({ slide, current, index }) {
       </div>
     </div>
     <figure className="feature-photo-band">
-      {slide.images.map(([image, alt], i) => <img key={`${image}-${i}`} src={`/images/${image}.webp`} alt={alt} fetchPriority={index === 0 ? "high" : "auto"} />)}
+      {slide.images.map(([image, alt], i) => <img key={`${image}-${i}`} src={`/images/${image}.webp`} alt={alt} width="1000" height="750" loading={index === 0 ? "eager" : "lazy"} fetchpriority={index === 0 ? "high" : "low"} />)}
     </figure>
     <div className="feature-evidence"><p>{slide.note}</p><a href={slide.noteLink[1]}>{slide.noteLink[0]} <ArrowRight size={16} aria-hidden="true" /></a></div>
   </div>;
@@ -50,7 +50,7 @@ function SlideContent({ slide, current, index }) {
 
 export default function HeroCarousel() {
   const [active, setActive] = useState(0);
-  const [playing, setPlaying] = useState(() => !window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const [playing, setPlaying] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [visible, setVisible] = useState(true);
   const root = useRef(null);
@@ -59,6 +59,7 @@ export default function HeroCarousel() {
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setPlaying(!media.matches);
     const reduce = () => { if (media.matches) setPlaying(false); };
     const visibility = () => setVisible(!document.hidden);
     media.addEventListener("change", reduce);

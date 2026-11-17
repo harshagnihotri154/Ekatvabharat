@@ -27,7 +27,7 @@ export default function PageIntro({ page, path }) {
         <p className="page-intro-description">{page.description}</p>
         {actions[path] && <a className="page-intro-action" href={actions[path][1]}>{actions[path][0]}<ArrowRight size={18} aria-hidden="true" /></a>}
       </div>
-      {visual && <figure className="page-intro-visual"><img src={`/images/${visual.image}.webp`} alt={visual.caption} fetchPriority="high" width="1200" height="800" /><figcaption><span>{visual.caption}</span><small>Illustrative visual</small></figcaption></figure>}
+      {visual && <figure className="page-intro-visual"><img src={`/images/${visual.image}.webp`} alt={visual.caption} fetchpriority="high" width="1200" height="800" /><figcaption><span>{visual.caption}</span><small>Illustrative visual</small></figcaption></figure>}
       </div>
     </div>
   </section>;

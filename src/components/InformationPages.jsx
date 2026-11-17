@@ -13,7 +13,7 @@ export const informationPages = {
     title: "Get involved",
     heading: "Your time. your skills.\nA shared purpose.",
     description:
-      "Explore volunteering, learning and partnership opportunities with our Pune team.",
+      "Looking to volunteer with an NGO in Pune? Tell us your interests, skills and availability. Our team will discuss current volunteering, learning and partnership opportunities.",
   },
   "/privacy": {
     title: "Privacy",

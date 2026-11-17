@@ -1,3 +1,4 @@
+import { seoPages, missingSeo } from "./seo/pages";
 import React, { useEffect, useRef, useState } from "react";
 import {
   ArrowUpRight,
@@ -21,7 +22,7 @@ import ProgramsSection from "./components/ProgramsSection";
 import PurposeSection from "./components/PurposeSection";
 import HeroCarousel from "./components/HeroCarousel";
 import Giving, { DonationTaxInfo } from "./components/Giving";
-import ContentPages, { pageInfo } from "./components/ContentPages";
+import ContentPages from "./components/ContentPages";
 import EnquiryForm from "./components/EnquiryForm";
 import { EvidenceStrip, TrustSection } from "./components/TrustSections";
 import { programDetails } from "./data/programs";
@@ -137,13 +138,14 @@ function Dialog({ title, children, onClose, wide = false }) {
   );
 }
 
-export default function App() {
-  const path = window.location.pathname.replace(/\/+$/, "") || "/";
+export default function App({ initialPath }) {
+  const path = (initialPath ?? window.location.pathname).replace(/\/+$/, "") || "/";
   const isHome = path === "/";
   useEffect(() => {
-    document.title = `${isHome ? "Opportunity for Everyone" : pageInfo[path]?.title || "Page not found"} | Ekatvabharat Foundation`;
+    const seo = seoPages[path] || missingSeo;
+    document.title = seo.title;
     const meta = document.querySelector('meta[name="description"]');
-    if (meta && pageInfo[path]) meta.content = pageInfo[path].description;
+    if (meta) meta.content = seo.description;
   }, [path, isHome]);
   const [showContribute, setShowContribute] = useState(false);
   useEffect(() => {

@@ -44,7 +44,7 @@ function token() {
     .join("");
 }
 export default function DonationCheckout() {
-  const params = new URLSearchParams(location.search);
+  const params = new URLSearchParams(typeof location === "undefined" ? "" : location.search);
   const [donation, setDonation] = useState(null),
     [bank, setBank] = useState(false),
     [config, setConfig] = useState(null),

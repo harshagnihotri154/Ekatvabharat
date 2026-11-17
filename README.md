@@ -73,3 +73,9 @@ The obsolete standalone components, simulated forms and tax calculator have been
 Set `MONGODB_URI` and `MONGODB_DB_NAME` in server-only environment variables. Local development uses `mongodb://127.0.0.1:27018/?replicaSet=ebf-local`. Production should use your Atlas connection string and a separate production database. No credentials belong in frontend variables or Git. See [DEPLOYMENT.md](DEPLOYMENT.md) for cloud setup.
 
 `npm run db:migrate -- /absolute/path/to/ebf.sqlite` imports legacy SQLite records without modifying the source or overwriting existing MongoDB IDs. Stop API writes during migration. Admin sessions are not imported. Tests use `TEST_MONGODB_URI` when set, otherwise the local replica set, and generate isolated database names.
+
+## Search visibility
+
+The production build prerenders the existing React pages, adds route-specific search/social metadata and structured data, and generates `sitemap.xml` and `robots.txt`. Keep the build command as `npm run build` and output directory as `dist` on Vercel.
+
+See [the SEO plan and owner checklist](docs/SEO-PLAN.md) for Search Console, content and local visibility work. Run `npm run test:seo` after building (requires Playwright Chromium or `CHROME_PATH`). The official canonical domain is configured in `src/seo/pages.js`.

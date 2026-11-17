@@ -27,7 +27,7 @@ export const pageInfo = {
     title: "Programs",
     heading: "Practical skills.\nShared progress.",
     description:
-      "Explore our work in livelihoods, agriculture, healthcare, and women and youth empowerment.",
+      "Explore skills training and community initiatives with our Pune-based NGO, including Earn & Learn, women and youth empowerment, and proposed agriculture partnerships.",
     image: "slide_skilling",
   },
   "/community": {
@@ -41,7 +41,7 @@ export const pageInfo = {
     title: "CSR Partnerships",
     heading: "Bring your purpose.\nBuild with ours.",
     description:
-      "Collaborate with Ekatvabharat Foundation on skills, community care and inclusive development.",
+      "Explore CSR and NGO partnerships in Pune with Ekatvabharat Foundation. Discuss skills training, community care, project scope and current documentation with our team.",
     image: "slide_agri",
   },
   "/donate": {

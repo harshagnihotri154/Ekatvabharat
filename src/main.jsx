@@ -4,11 +4,14 @@ import App from './App.jsx';
 import './index.css';
 import './mobile.css';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const root = document.getElementById('root');
+const app = <React.StrictMode><App /></React.StrictMode>;
+// Contribution query parameters are browser-specific; render that page fresh.
+if (root.hasChildNodes() && location.pathname.replace(/\/+$/, '') !== '/donate') {
+  ReactDOM.hydrateRoot(root, app);
+} else {
+  ReactDOM.createRoot(root).render(app);
+}
 
 import "./upgrade.css";
 
