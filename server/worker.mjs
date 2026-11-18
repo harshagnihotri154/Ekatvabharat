@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-export function startWorker({ db, gateway, updatePayment, env }) {
+export function createWorker({ db, gateway, updatePayment, env }) {
   const transport =
     env.SMTP_HOST && env.SMTP_FROM
       ? nodemailer.createTransport({
@@ -26,7 +26,7 @@ export function startWorker({ db, gateway, updatePayment, env }) {
               to: mail.recipient,
               subject: mail.subject,
               text: mail.body,
-              messageId: `<${mail.id.replaceAll(":", "-")}@${env.MAIL_MESSAGE_DOMAIN || "ekatvabharat.org"}>`,
+              messageId: `<${mail.id.replaceAll(":", "-")}@${env.MAIL_MESSAGE_DOMAIN || "ekatvabharatfoundation.com"}>`,
             });
             await db.update("outbox", { id: mail.id }, { $set: { status: "sent" }, $inc: { attempts: 1 } });
           } catch {
@@ -48,9 +48,14 @@ export function startWorker({ db, gateway, updatePayment, env }) {
       busy = false;
     }
   }
+  return { runOnce: tick, close: () => transport?.close() };
+}
+
+export function startWorker(options) {
+  const worker = createWorker(options);
   const timer = setInterval(
     () =>
-      tick().catch(() =>
+      worker.runOnce().catch(() =>
         console.error("Background delivery or reconciliation needs attention."),
       ),
     60000,
@@ -58,6 +63,6 @@ export function startWorker({ db, gateway, updatePayment, env }) {
   timer.unref();
   return () => {
     clearInterval(timer);
-    transport?.close();
+    worker.close();
   };
 }

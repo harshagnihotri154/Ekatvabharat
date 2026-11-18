@@ -15,7 +15,9 @@
     "admin:setup": "node scripts/admin-setup.mjs",
     "db:migrate": "node --experimental-sqlite --env-file-if-exists=.env scripts/migrate-sqlite.mjs",
     "db:local": "node scripts/local-mongo.mjs",
-    "test:seo": "node scripts/check-seo.mjs"
+    "test:seo": "node scripts/check-seo.mjs",
+    "deploy:connect-api": "node scripts/connect-api.mjs",
+    "test:uat": "node scripts/uat.mjs"
   },
   "dependencies": {
     "express": "^5.3.0",
@@ -35,6 +37,7 @@
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react": "^5.2.0",
     "concurrently": "^10.0.7",
+    "smtp-server": "^3.21.6",
     "vite": "^7.3.6"
   },
   "engines": {

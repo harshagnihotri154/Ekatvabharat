@@ -25,7 +25,7 @@ if (
 const db = await openDatabase(env.MONGODB_URI, env.MONGODB_DB_NAME || "ekatvabharat");
 const gateway = createGateway(env);
 const { app, updatePayment } = createApp({ db, gateway, env });
-if (env.NODE_ENV === "production") {
+if (env.NODE_ENV === "production" && env.SERVE_FRONTEND !== "false") {
   app.use(express.static(resolve("dist")));
   app.get("/{*path}", (_req, res) =>
     res.status(404).sendFile(resolve("dist/404.html")),

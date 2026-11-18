@@ -1,0 +1,32 @@
+# Deployment blueprint only. Starter is paid; review Render's price before creating.
+# One instance is required while the email worker uses an in-process lock.
+services:
+  - type: web
+    name: ekatvabharat-api
+    runtime: node
+    plan: starter
+    numInstances: 1
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22.12.0
+      - key: NODE_ENV
+        value: production
+      - key: SERVE_FRONTEND
+        value: "false"
+      - key: TRUST_PROXY
+        value: "1"
+      - key: APP_ORIGINS
+        value: https://ekatvabharatfoundation.com,https://www.ekatvabharatfoundation.com
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB_NAME
+        value: ekatvabharat
+      - key: ADMIN_TOKEN
+        generateValue: true
+      - key: CONTACT_EMAIL
+        value: info@ekatvabharatfoundation.com
+      - key: DONATIONS_LIVE_APPROVED
+        value: "false"

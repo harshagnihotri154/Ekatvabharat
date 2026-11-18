@@ -32,7 +32,7 @@ The import reads SQLite consistently and writes all imported collections in one 
 
 ### Current verification status
 
-MongoDB integration has been exercised against a local MongoDB replica set. Atlas credentials have not been supplied and no remote cluster or live website has been provisioned. Production requires the owner’s Atlas and hosting settings.
+MongoDB integration has been exercised against a local replica set and the supplied Atlas cluster in an isolated test database. The public frontend is deployed; the production API is not connected yet. See docs/UAT-REPORT.md for acceptance results and outstanding deployment checks.
 
 ## Razorpay test setup
 
@@ -64,3 +64,17 @@ The admin dashboard provides transaction references, refund status, enquiry foll
 - Perform an explicitly authorised small live payment and refund; confirm receipt email, webhook processing and merchant settlement visibility.
 
 No live payment or refund was performed during implementation. Monthly subscriptions and foreign-source contributions remain separate future work requiring account eligibility, mandate/cancellation handling and appropriate approval.
+
+## Vercel frontend + always-running API
+
+`render.yaml` is a ready-to-review Render Blueprint for the API. It uses a **paid Starter** instance, keeps exactly one worker instance, and generates a fresh admin token. No hosting service or subscription is created by committing this file. Review the current price in Render before creating it. A sleeping/free service is unsuitable for dependable background mail delivery and payment reconciliation.
+
+1. Import this repository as a Render Blueprint. Add the Atlas URI through Render's secret field; never commit it. Rotate any credentials previously pasted into chat. Ensure Atlas Network Access allows the service's outbound addresses.
+2. The blueprint sets both public website origins, `SERVE_FRONTEND=false`, health check `/api/health`, and `CONTACT_EMAIL=info@ekatvabharatfoundation.com`. Its backend-only build does not need the Vite frontend bundle. Keep `NODE_ENV=production` and one instance.
+3. After Render is healthy, run `npm run deploy:connect-api -- https://YOUR-API.onrender.com`. This checks `/api/health` before writing the exact Vercel rewrite. Commit `vercel.json` and redeploy the frontend. This keeps forms and admin cookies on the website origin. Do not change frontend requests to a cross-origin URL.
+4. Add SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD and SMTP_FROM to Render for notifications. Add Razorpay test credentials first. Keep live donations disabled until genuine gateway UAT and merchant setup are complete. Configure the webhook at the public website's `/api/payments/webhook` endpoint after the proxy is active.
+5. Verify the public domain's `/api/health` and `/api/config`, then perform a labelled enquiry UAT with a controlled email address, confirm the admin record and email delivery, and close the test record. Verify admin HTTPS cookies and logout through the Vercel proxy. Record genuine provider test-mode success/failure/webhook results separately from mocked API tests.
+
+### Repeatable UAT
+
+`npm run build` then `npm run test:uat` starts a temporary local production frontend/API server with a real isolated MongoDB database and local SMTP capture. It exercises all four contact topics, the get-involved form, persistence, duplicate submission protection, origin rejection, email failure/retry, admin follow-up and payment-disabled behavior. No external recipient is emailed and no real payment is made. Set TEST_MONGODB_URI only to an authorised replica-set/Atlas test connection and CHROME_PATH if needed. Test records are removed afterward. The test intentionally uses local HTTP; deployed HTTPS/proxy behavior still needs production acceptance testing.

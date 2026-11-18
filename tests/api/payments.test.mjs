@@ -10,7 +10,7 @@ const origin = "http://localhost:3000",
 const signature = (message, key = secret) =>
   createHmac("sha256", key).update(message).digest("hex");
 async function fixture(t) {
-  const databaseName = `ebf_test_${randomUUID().replaceAll("-", "")}`;
+  const databaseName = `ebf_test_${randomUUID().replaceAll("-", "").slice(0,24)}`;
   const db = await openDatabase(process.env.TEST_MONGODB_URI || "mongodb://127.0.0.1:27018/?replicaSet=ebf-local", databaseName);
   let orders = 0,
     payment = {
