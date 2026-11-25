@@ -1,13 +1,16 @@
 import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
 import { render } from "../.prerender/entry-server.js";
 import { seoPages, missingSeo, siteUrl, siteName } from "../src/seo/pages.js";
+import { pageFaqs } from "../src/data/faqs.js";
+import { programDetails } from "../src/data/programs.js";
 const template = await readFile("dist/index.html", "utf8");
 const escape = value => value.replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 const organization = {
   "@type": "Organization", "@id": `${siteUrl}/#organization`, name: siteName,
   url: `${siteUrl}/`, logo: `${siteUrl}/images/logo.jpeg`, foundingDate: "2021", email: "info@ekatvabharatfoundation.com",
   telephone: "+919272799605",
-  address: { "@type": "PostalAddress", addressLocality: "Pune", addressCountry: "IN" },
+  identifier: { "@type": "PropertyValue", propertyID: "CIN", value: "U85300PN2021NPL206842" },
+  address: { "@type": "PostalAddress", addressLocality: "Pune", addressRegion: "Maharashtra", addressCountry: "IN" },
   description: "A Pune-based Section 8 nonprofit focused on practical learning, community care and opportunities for independent lives.",
 };
 function output(path, seo) {
@@ -15,9 +18,35 @@ function output(path, seo) {
   const graph = [organization, {"@type":"WebSite", "@id":`${siteUrl}/#website`,url:`${siteUrl}/`,name:siteName,publisher:{"@id":organization["@id"]}},
     {"@type": path === "/about" ? "AboutPage" : path === "/contact" ? "ContactPage" : "WebPage", "@id":`${url}#webpage`,url,name:seo.title,description:seo.description,isPartOf:{"@id":`${siteUrl}/#website`},about:{"@id":organization["@id"]},inLanguage:"en"}];
   if (path !== "/") graph.push({"@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:`${siteUrl}/`},{"@type":"ListItem",position:2,name:seo.label,item:url}]});
+  const webpage = graph.find(node => node["@id"] === `${url}#webpage`);
+  if (path !== "/" && !seo.noindex) {
+    graph.find(node => node["@type"] === "BreadcrumbList")["@id"] = `${url}#breadcrumb`;
+    webpage.breadcrumb = { "@id": `${url}#breadcrumb` };
+  }
+  if (pageFaqs[path]) {
+    webpage.hasPart = { "@id": `${url}#questions` };
+    graph.push({ "@type": "FAQPage", "@id": `${url}#questions`, url: `${url}#questions`,
+      isPartOf: { "@id": webpage["@id"] },
+      mainEntity: pageFaqs[path].map(([question, answer]) => ({
+        "@type": "Question", name: question,
+        acceptedAnswer: { "@type": "Answer", text: answer },
+      })),
+    });
+  }
+  if (path === "/programs") {
+    webpage["@type"] = "CollectionPage";
+    webpage.mainEntity = { "@id": `${url}#programs` };
+    graph.push({ "@type": "ItemList", "@id": `${url}#programs`, name: "Foundation program focus areas",
+      itemListElement: programDetails.map((program, index) => ({ "@type": "ListItem", position: index + 1,
+        item: { "@type": "Thing", name: program.name, url: `${url}#${program.slug}`,
+          description: `${program.status}. ${program.description}` },
+      })),
+    });
+  }
   const metadata = `
     <meta name="robots" content="${seo.noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large"}" />
     ${seo.noindex ? "" : `<link rel="canonical" href="${url}" />`}
+    <meta property="og:locale" content="en_IN" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="${siteName}" />
     <meta property="og:title" content="${escape(seo.title)}" />
@@ -28,6 +57,7 @@ function output(path, seo) {
     <meta property="og:image:width" content="425" />
     <meta property="og:image:height" content="425" />
     <meta name="twitter:image" content="${siteUrl}/images/logo.jpeg" />
+    <meta name="twitter:image:alt" content="Ekatvabharat Foundation logo" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="${escape(seo.title)}" />
     <meta name="twitter:description" content="${escape(seo.description)}" />

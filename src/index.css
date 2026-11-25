@@ -2618,3 +2618,15 @@ footer {
     gap: 2px 18px;
   }
 }
+
+/* Native disclosures keep answers available with or without JavaScript. */
+.faq summary {
+  padding: 22px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  cursor: pointer;
+}
+.faq summary:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+details.faq p { font-size: 1rem; }
+.faq-grid a { text-decoration: underline; text-underline-offset: 3px; }

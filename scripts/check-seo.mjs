@@ -3,6 +3,8 @@ import {readFile} from "node:fs/promises";
 import express from "express";
 import {chromium} from "@playwright/test";
 import {seoPages, siteUrl} from "../src/seo/pages.js";
+import {pageFaqs} from "../src/data/faqs.js";
+import {programDetails} from "../src/data/programs.js";
 const sitemap = await readFile("dist/sitemap.xml", "utf8");
 const robots = await readFile("dist/robots.txt", "utf8");
 assert(robots.includes(`Sitemap: ${siteUrl}/sitemap.xml`));
@@ -35,6 +37,20 @@ try {
   }
   await page.goto(base+path);await page.waitForTimeout(100);
   assert.equal(await page.title(),seo.title,`Client overwrote title: ${path}`);
+  if (pageFaqs[path]) {
+   const schema = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());
+   const faqSchema = schema['@graph'].find(node => node['@type'] === 'FAQPage');
+   assert.deepEqual(faqSchema.mainEntity.map(item => [item.name, item.acceptedAnswer.text]), pageFaqs[path]);
+   const disclosures = page.locator('details.faq');
+   assert.equal(await disclosures.count(), pageFaqs[path].length);
+   for (let i = 0; i < pageFaqs[path].length; i++) {
+    assert.equal(await disclosures.nth(i).locator('summary').textContent(), pageFaqs[path][i][0]);
+    assert.equal(await disclosures.nth(i).locator('p').textContent(), pageFaqs[path][i][1]);
+   }
+  }
+  if (path === '/programs') {
+   for (const program of programDetails) assert.equal(await page.locator(`#${program.slug}`).count(), 1);
+  }
   assert.equal(await page.locator('h1:visible').count(),1,path);
  }
  await page.goto(base+'/');
@@ -46,5 +62,9 @@ try {
  const missing=await fetch(base+'/missing-page');assert.equal(missing.status,404);assert((await missing.text()).includes('noindex, nofollow'));
  assert.deepEqual(errors,[]);
  const noJs=await browser.newContext({javaScriptEnabled:false});const staticPage=await noJs.newPage();await staticPage.goto(base+'/programs');assert((await staticPage.locator('body').innerText()).includes('Skills & livelihoods'));
+ await staticPage.goto(base+'/');
+ const lastAnswer = staticPage.locator('details.faq').last();
+ await lastAnswer.locator('summary').click();
+ assert(await lastAnswer.locator('p').isVisible(), 'FAQ requires JavaScript');
  console.log('SEO checks passed: static content, metadata, schemas, sitemap, 404, hydration, program dialog and donation query.');
 } finally {await browser?.close();await new Promise(resolve=>server.close(resolve));}

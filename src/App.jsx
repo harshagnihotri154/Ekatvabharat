@@ -1,3 +1,4 @@
+import FrequentlyAskedQuestions from "./components/FrequentlyAskedQuestions";
 import { seoPages, missingSeo } from "./seo/pages";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -9,7 +10,6 @@ import {
   Mail,
   Phone,
   Plus,
-  Minus,
   GraduationCap,
   Sprout,
   HeartPulse,
@@ -34,28 +34,7 @@ const programs = programDetails.map((program, index) => ({
   icon: programIcons[index],
   detail: program.description + " " + program.evidence,
 }));
-const faqs = [
-  [
-    "What does Ekatvabharat Foundation do?",
-    "We are a Pune-based Section 8 nonprofit established in 2021, working across skill development, sustainable agriculture, community healthcare, and women and youth empowerment.",
-  ],
-  [
-    "How can I join an Earn & Learn program?",
-    "Contact our team with the course you are interested in. We will share current batch availability, eligibility, fees and the application process. Training opportunities include hospitality, cookery and business skills.",
-  ],
-  [
-    "How can my organisation partner with you?",
-    "We welcome conversations about CSR-supported training, community initiatives, employee volunteering and other partnerships. Email our team to discuss your priorities and request a project proposal.",
-  ],
-  [
-    "How do I donate or volunteer?",
-    "Speak with our team to arrange a contribution or explore volunteering opportunities. We will share verified donation instructions and discuss where your time or skills can help. Use the contribution page for available payment options. Online payments are confirmed after verification; bank transfers are reconciled by the team.",
-  ],
-  [
-    "Where does the foundation work?",
-    "We are based in Pune. Our materials describe community initiatives across Pune and PCMC, alongside rural development work in Maharashtra.",
-  ],
-];
+
 const stories = [
   {
     image: "community",
@@ -161,8 +140,7 @@ export default function App({ initialPath }) {
     return () => observer.disconnect();
   }, [path]);
   const [menu, setMenu] = useState(false),
-    [modal, setModal] = useState(null),
-    [faq, setFaq] = useState(0);
+    [modal, setModal] = useState(null);
   const close = React.useCallback(() => setModal(null), []);
   useEffect(() => {
     if (!menu) return;
@@ -449,47 +427,7 @@ export default function App({ initialPath }) {
                 ))}
               </div>
             </section>
-            <section className="faq-section section">
-              <div className="container faq-grid">
-                <div>
-                  <p className="eyebrow">A LITTLE MORE CLARITY</p>
-                  <h2>
-                    Good questions.
-                    <br />
-                    Straight answers.
-                  </h2>
-                  <p>Still curious about something?</p>
-                  <a className="text-link" href="#contact">
-                    Talk to our team <ArrowRight size={18} />
-                  </a>
-                </div>
-                <div>
-                  {faqs.map(([q, a], i) => (
-                    <div className="faq" key={q}>
-                      <h3>
-                        <button
-                          aria-expanded={faq === i}
-                          aria-controls={`answer-${i}`}
-                          id={`question-${i}`}
-                          onClick={() => setFaq(faq === i ? null : i)}
-                        >
-                          {q}
-                          {faq === i ? <Minus size={19} /> : <Plus size={19} />}
-                        </button>
-                      </h3>
-                      <div
-                        id={`answer-${i}`}
-                        role="region"
-                        aria-labelledby={`question-${i}`}
-                        hidden={faq !== i}
-                      >
-                        <p>{a}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
+            <FrequentlyAskedQuestions path="/" />
             <section className="closing">
               <div className="container">
                 <p className="eyebrow">ONE BHARAT. COUNTLESS POSSIBILITIES.</p>
@@ -516,6 +454,7 @@ export default function App({ initialPath }) {
             setModal={setModal}
           />
         )}
+        {!isHome && <FrequentlyAskedQuestions path={path} />}
       </main>
       <footer id="contact" className={isHome ? "journal-footer" : undefined}>
         <div className="container footer-grid">

@@ -85,3 +85,18 @@ Search Console verification, DNS, Google Business Profile ownership, GTM publish
 - Sitemap requirements: https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap
 - Search Console verification: https://support.google.com/webmasters/answer/9008080
 - Business Profile eligibility: https://support.google.com/business/answer/7039811
+
+## SEO, AEO and GEO improvements — 25 November 2026
+
+This update adds native HTML question-and-answer disclosures on the homepage, About, Programs, CSR Partnerships and Get Involved pages. Answers are prerendered and can be expanded without JavaScript. The homepage answers now distinguish agriculture planning from current delivery. Page-specific answers address enrolment, employment expectations, partnership scoping and volunteering without inventing availability.
+
+`src/data/faqs.js` is the single source for rendered answers and FAQPage JSON-LD. Update it when verified program details change. The schema describes content users can actually read; it does not promise FAQ rich results or AI citations. Internal links lead readers to programs, contact details and transparency records. Program CollectionPage/ItemList markup points to existing program anchors and preserves each program’s status. Organization markup adds the existing public CIN and Maharashtra region; breadcrumbs are explicitly connected to page entities. Social metadata now includes the India English locale and Twitter image alternative text.
+
+Validation: the production SEO check compares FAQ questions and answers against the rendered DOM, checks program anchor destinations and verifies that a collapsed answer can be opened with JavaScript disabled, alongside existing canonical, sitemap, hydration and 404 checks.
+
+After deployment, submit the sitemap in Google Search Console and Bing Webmaster Tools using the owner’s verified accounts. Inspect the updated pages and monitor organic enquiries, indexed pages and relevant query impressions. No search-console submissions, production deployment, ranking improvements or AI citations are claimed by this local change. Add dated activity reports and verified current program information as they become available; these remain the strongest missing content inputs.
+
+Google’s guidance says normal SEO foundations apply to AI features and no special AI markup or text file is required. We therefore prioritise accessible answers, factual context and consistent metadata instead of adding an unsupported ranking mechanism:
+- https://developers.google.com/search/docs/appearance/ai-features
+- https://developers.google.com/search/docs/appearance/structured-data/sd-policies
+- https://developers.google.com/search/blog/2023/08/howto-faq-changes
